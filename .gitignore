@@ -10,3 +10,12 @@ logs/
 screenshots/
 cv/generated/
 .env
+
+# Node & Next.js
+node_modules/
+.next/
+dist/
+.env.local
+.env*.local
+*.tsbuildinfo
+next-env.d.ts
