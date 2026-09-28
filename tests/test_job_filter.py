@@ -76,3 +76,35 @@ def test_filter_location_matching(job_filter, sample_job_post):
     is_valid, reason = job_filter.evaluate(job_jkt)
     assert is_valid is False
     assert "Location 'Jakarta Selatan' not in target locations" in reason
+
+def test_filter_rejects_irrelevant_job_roles(job_filter, sample_job_post):
+    """SRCH-REL-002: Filter must reject jobs with titles irrelevant to target_roles."""
+    irrelevant_titles = [
+        "Conservation Acquisition Representative",
+        "Interior Project Manager",
+        "Wakil Supervisor",
+        "Freelance Recruiter",
+        "Frontliner",
+        "Account Manager IT"
+    ]
+    for title in irrelevant_titles:
+        job = JobPost(**dict(sample_job_post, position=title))
+        is_valid, reason = job_filter.evaluate(job)
+        assert is_valid is False, f"Expected '{title}' to be rejected"
+        assert "role" in reason.lower() or "target" in reason.lower() or "position" in reason.lower()
+
+def test_filter_accepts_relevant_job_roles(job_filter, sample_job_post):
+    """SRCH-REL-001: Filter must accept jobs with titles matching target_roles or related synonyms."""
+    relevant_titles = [
+        "QA Engineer",
+        "Senior QA Automation Engineer",
+        "Quality Assurance Specialist",
+        "Software Tester",
+        "SDET",
+        "System Analyst"
+    ]
+    for title in relevant_titles:
+        job = JobPost(**dict(sample_job_post, position=title))
+        is_valid, reason = job_filter.evaluate(job)
+        assert is_valid is True, f"Expected '{title}' to be accepted, but got: {reason}"
+

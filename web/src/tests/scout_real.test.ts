@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import { FirestoreJobService, clearMockStore } from "../lib/firestore";
+import { isTitleRelevant } from "../lib/title_matcher";
 import * as fs from "fs";
 import * as path from "path";
 
@@ -29,4 +30,19 @@ describe("Elimination of Simulation Data & Real Search Requirements", () => {
     expect(content).not.toContain("Fintech Nusantara");
     expect(content).not.toContain("Mitra Sales Niaga");
   });
+
+  it("REQ-REL-01: isTitleRelevant utility must match relevant QA roles and reject irrelevant roles", () => {
+    expect(isTitleRelevant("Senior QA Automation Engineer", "QA Engineer")).toBe(true);
+    expect(isTitleRelevant("Quality Assurance Specialist", "QA Engineer")).toBe(true);
+    expect(isTitleRelevant("Software Tester", "QA Engineer")).toBe(true);
+    expect(isTitleRelevant("SDET (Software Development Engineer in Test)", "QA Engineer")).toBe(true);
+
+    // Reject irrelevant titles
+    expect(isTitleRelevant("Conservation Acquisition Representative", "QA Engineer")).toBe(false);
+    expect(isTitleRelevant("Interior Project Manager", "QA Engineer")).toBe(false);
+    expect(isTitleRelevant("Course Consultant B2C Surabaya", "QA Engineer")).toBe(false);
+    expect(isTitleRelevant("Wakil Head Kitchen", "QA Engineer")).toBe(false);
+    expect(isTitleRelevant("Account Manager IT", "QA Engineer")).toBe(false);
+  });
 });
+

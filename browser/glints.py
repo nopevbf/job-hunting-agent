@@ -60,7 +60,11 @@ class GlintsScraper(BaseJobScraper):
                 page.goto(url, timeout=30000)
                 time.sleep(3)
 
-                cards = page.query_selector_all("a[href*='/opportunities/jobs/']")
+                if "Just a moment" in page.title():
+                    logger.warning("Glints terhalang proteksi Cloudflare challenge pada mode headless.")
+                    browser.close()
+                    return jobs
+
                 seen_urls = set()
                 for c in cards:
                     if len(jobs) >= limit:

@@ -89,12 +89,14 @@ class JobMatcher:
         # 2. Role / Position Match (20%)
         title_lower = job.position.lower()
         pref_title = self.profile.get("title", "").lower()
-        if "qa" in title_lower or "quality assurance" in title_lower or "system analyst" in title_lower:
+        qa_terms = ["qa", "quality assurance", "test", "sdet", "tester", "automation"]
+        if any(term in title_lower for term in qa_terms) or "system analyst" in title_lower:
             role_score = 20.0
-        elif pref_title and any(word in title_lower for word in pref_title.split()):
+        elif pref_title and any(word in title_lower for word in pref_title.split() if len(word) > 2):
             role_score = 15.0
         else:
-            role_score = 10.0
+            role_score = 0.0
+
 
         # 3. Experience Match (15%)
         job_exp = job.min_experience_years or 0

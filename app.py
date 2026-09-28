@@ -31,6 +31,7 @@ from agent.orchestrator import JobHuntingOrchestrator
 from integrations.microsoft_todo import MicrosoftToDoSync
 from browser.glints import GlintsScraper
 from browser.jobstreet import JobStreetScraper
+from browser.kalibrr import KalibrrScraper
 
 console = Console()
 logging.basicConfig(
@@ -77,29 +78,38 @@ def cmd_search(args):
     mode = (args.mode or os.getenv("JOB_AGENT_MODE", "ASSISTED")).upper()
     console.print(f"\n[bold cyan]🚀 Starting Job Hunting Agent in [{mode}] Mode...[/bold cyan]")
     orch = get_orchestrator(mode=mode)
-    approval_ui = ApprovalConsole(console=console)
-
-    console.print(f"[bold green]🔍 Menjalankan scraper langsung ke JobStreet & Glints Indonesia...[/bold green]")
+    query = getattr(args, "query", None) or "QA Engineer"
+    console.print(f"[bold green]🔍 Menjalankan scraper pencarian: '{query}'...[/bold green]")
     jobstreet_adapter = JobStreetScraper()
+    kalibrr_adapter = KalibrrScraper()
     glints_adapter = GlintsScraper()
 
     normalized_jobs = []
 
     # 1. Scrape real jobs from JobStreet Indonesia
     try:
-        console.print("[dim]→ Mengambil lowongan QA Engineer dari JobStreet Indonesia...[/dim]")
-        js_jobs = jobstreet_adapter.scrape(keyword="QA-Engineer", limit=10)
+        console.print(f"[dim]→ Mengambil lowongan '{query}' dari JobStreet Indonesia...[/dim]")
+        js_jobs = jobstreet_adapter.scrape(keyword=query, limit=10)
         normalized_jobs.extend(js_jobs)
-        console.print(f"[green]✓ Ditemukan {len(js_jobs)} lowongan nyata dari JobStreet[/green]")
+        console.print(f"[green]✓ Ditemukan {len(js_jobs)} lowongan dari JobStreet[/green]")
     except Exception as e:
         console.print(f"[yellow]Peringatan scraper JobStreet:[/] {e}")
 
-    # 2. Scrape real jobs from Glints Indonesia
+    # 2. Scrape real jobs from Kalibrr Indonesia
     try:
-        console.print("[dim]→ Mengambil lowongan QA Engineer dari Glints Indonesia...[/dim]")
-        gl_jobs = glints_adapter.scrape(keyword="QA Engineer", limit=10)
+        console.print(f"[dim]→ Mengambil lowongan '{query}' dari Kalibrr Indonesia...[/dim]")
+        kl_jobs = kalibrr_adapter.scrape(keyword=query, limit=10)
+        normalized_jobs.extend(kl_jobs)
+        console.print(f"[green]✓ Ditemukan {len(kl_jobs)} lowongan dari Kalibrr[/green]")
+    except Exception as e:
+        console.print(f"[yellow]Peringatan scraper Kalibrr:[/] {e}")
+
+    # 3. Scrape real jobs from Glints Indonesia
+    try:
+        console.print(f"[dim]→ Mengambil lowongan '{query}' dari Glints Indonesia...[/dim]")
+        gl_jobs = glints_adapter.scrape(keyword=query, limit=10)
         normalized_jobs.extend(gl_jobs)
-        console.print(f"[green]✓ Ditemukan {len(gl_jobs)} lowongan nyata dari Glints[/green]")
+        console.print(f"[green]✓ Ditemukan {len(gl_jobs)} lowongan dari Glints[/green]")
     except Exception as e:
         console.print(f"[yellow]Peringatan scraper Glints:[/] {e}")
 

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { firestoreJobService } from "@/lib/firestore";
 import { JobPostData, TailoredCVContent } from "@/lib/types";
+import { isTitleRelevant } from "@/lib/title_matcher";
 
 interface ScoutRequest {
   query?: string;
@@ -22,13 +23,51 @@ interface RawRealJob {
 
 /**
  * Fetches real live tech jobs from verified public job APIs and local sync cache.
- * Completely eliminates dummy simulation data.
+ * Integrates Kalibrr, Remotive, and synced local scrapers.
  */
 async function fetchRealLiveJobs(query: string): Promise<RawRealJob[]> {
   const realJobs: RawRealJob[] = [];
   const timeoutMs = 8000;
 
-  // 1. Fetch live jobs from Remotive API
+  // 1. Fetch live Indonesian jobs from Kalibrr API
+  try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+    const res = await fetch(`https://www.kalibrr.com/api/job_board/search?text=${encodeURIComponent(query)}&limit=15`, {
+      signal: controller.signal,
+      headers: {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+        "Accept": "application/json",
+      },
+    });
+    clearTimeout(timeoutId);
+
+    if (res.ok) {
+      const data = await res.json();
+      const items = Array.isArray(data.jobs) ? data.jobs : [];
+      for (const item of items) {
+        if (item.name && item.id) {
+          const compName = item.company?.name || "Confidential";
+          const compCode = item.company?.code || "company";
+          const city = item.google_location?.address_components?.city || "Indonesia";
+          const rawDesc = (item.description || "").replace(/<[^>]*>?/gm, " ").trim();
+          realJobs.push({
+            source: "Kalibrr",
+            company: compName,
+            position: item.name,
+            location: city,
+            job_url: `https://www.kalibrr.com/c/${compCode}/sub/${item.id}`,
+            description: rawDesc.slice(0, 500) || item.name,
+            requirements: ["Manual Testing", "API Testing", "Playwright", "SQL", "Selenium"],
+          });
+        }
+      }
+    }
+  } catch (err) {
+    console.warn("Notice: Kalibrr live fetch unavailable:", err);
+  }
+
+  // 2. Fetch live jobs from Remotive API
   try {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
@@ -140,7 +179,13 @@ export async function POST(request: Request) {
     let skippedCount = 0;
 
     for (const item of realJobsList) {
-      // 1. Exclude Keyword Check (Job Filter)
+      // 1. Title / Role Relevance Check (Strict Matching)
+      if (!isTitleRelevant(item.position, targetQuery)) {
+        skippedCount++;
+        continue;
+      }
+
+      // 2. Exclude Keyword Check (Job Filter)
       if (item.position.toLowerCase().includes("sales") || item.description.toLowerCase().includes("commission only")) {
         skippedCount++;
         continue;
