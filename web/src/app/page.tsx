@@ -310,9 +310,28 @@ export default function DashboardPage() {
                 />
               ))
             ) : (
-              <div className="col-span-full py-16 text-center glass-card rounded-bento-md">
-                <p className="text-sm font-semibold text-ink-base">Tidak ada lowongan di kategori ini.</p>
-                <p className="text-xs text-ink-muted mt-1">Coba gunakan bilah pencarian di atas atau import lowongan baru.</p>
+              <div className="col-span-full py-16 text-center glass-card rounded-bento-md p-8 flex flex-col items-center justify-center">
+                <div className="w-12 h-12 rounded-full bg-sage-deep/10 flex items-center justify-center text-sage-deep mb-3">
+                  <Sparkles className="w-6 h-6" />
+                </div>
+                <h3 className="text-base font-display font-bold text-ink-base">
+                  {jobs.length === 0 ? "Belum Ada Lowongan Nyata Tersimpan" : "Tidak Ada Lowongan di Kategori Ini"}
+                </h3>
+                <p className="text-xs text-ink-muted mt-1 max-w-md leading-relaxed">
+                  {jobs.length === 0
+                    ? "Seluruh data simulasi telah dibersihkan. Klik tombol di bawah atau jalankan 'python app.py search' di laptop untuk memindai lowongan nyata dari JobStreet & Glints."
+                    : "Pilih tab filter lain di atas atau lakukan pencarian baru untuk melihat peluang lowongan lainnya."}
+                </p>
+                {jobs.length === 0 && (
+                  <button
+                    onClick={handleTriggerScout}
+                    disabled={isScouting}
+                    className="mt-4 flex items-center gap-1.5 px-4 py-2 rounded-bento-sm bg-sage-deep hover:bg-[#284230] text-canvas-base text-xs font-semibold shadow-sm transition"
+                  >
+                    {isScouting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4 text-terracotta-soft" />}
+                    <span>Cari Lowongan Nyata Sekarang</span>
+                  </button>
+                )}
               </div>
             )}
           </div>

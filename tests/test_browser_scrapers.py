@@ -44,3 +44,20 @@ def test_jobstreet_scraper_parse_card():
     assert job.salary_max == 20000000
     assert job.min_experience_years == 4
     assert job.location == "Remote"
+
+def test_scrapers_expose_real_scrape_interface():
+    """Ensure both scrapers implement the real scrape() method."""
+    js = JobStreetScraper()
+    assert hasattr(js, "scrape")
+    assert callable(js.scrape)
+
+    gl = GlintsScraper()
+    assert hasattr(gl, "scrape")
+    assert callable(gl.scrape)
+
+def test_app_does_not_contain_hardcoded_sample_feeds():
+    """Verify that app.py does not contain hardcoded dummy sample feeds."""
+    from pathlib import Path
+    app_code = Path("app.py").read_text(encoding="utf-8")
+    assert "sample_scraped_feeds" not in app_code, "app.py still contains hardcoded dummy feeds!"
+

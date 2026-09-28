@@ -15,7 +15,11 @@ import { JobPostData, JobHuntingStats, ApplicationStatus } from "./types";
 // In-memory mock store for local development without Firebase credentials
 const globalMockStore: Map<string, JobPostData> = new Map();
 
-// Seed initial realistic data for immediate UI rendering
+export function clearMockStore() {
+  globalMockStore.clear();
+}
+
+// Seed synced data if available from Python agent (no dummy simulation data)
 export function seedMockStoreIfNeeded() {
   if (globalMockStore.size === 0) {
     // Try loading synced_jobs.json if available from Python agent
@@ -27,95 +31,10 @@ export function seedMockStoreIfNeeded() {
           const id = j.id ? String(j.id) : `job-${Date.now()}`;
           globalMockStore.set(id, { ...j, id });
         });
-        return;
       }
     } catch {
-      // fallback to hardcoded default jobs
+      // Clean state: no dummy simulation data seeded
     }
-
-    const defaultJobs: JobPostData[] = [
-      {
-        id: "job-1",
-        source: "Glints",
-        company: "Traveloka",
-        position: "QA Automation Engineer",
-        location: "Yogyakarta",
-        salary_min: 12000000,
-        salary_max: 18000000,
-        job_url: "https://glints.com/id/opportunities/jobs/traveloka-qa-automation-101",
-        job_description: "Looking for experienced QA Engineer with Manual Testing, API Testing, Postman, SQL, and Playwright.",
-        requirements: ["Manual Testing", "API Testing", "Playwright", "Postman", "SQL"],
-        min_experience_years: 3,
-        match_score: 100.0,
-        status: "READY_TO_APPLY",
-        matched_skills: ["Manual Testing", "API Testing", "Playwright", "Postman", "SQL"],
-        gaps: [],
-        tailored_cv: {
-          name: "Firman Aji Prasetyo",
-          title: "QA Engineer | Test Automation | ISTQB-Aligned",
-          summary: "QA Engineer with 1.5+ years of experience delivering quality across 6 concurrent projects in PropertyTech and Fintech domains. Specializes in test automation (Selenium, Playwright), ISTQB-aligned techniques, and reducing defect leakage.",
-          skills: {
-            "Testing": ["Manual Testing", "Regression Testing", "Exploratory Testing"],
-            "Automation": ["Selenium", "Playwright", "Postman"],
-            "Database & Observability": ["SQL", "Grafana"],
-          },
-          experiences: [
-            {
-              company: "PT. Royal D'Paragon Land",
-              role: "Quality Assurance Engineer",
-              location: "Depok, Yogyakarta · On-site",
-              start_date: "2025-03",
-              end_date: "2026-04",
-              bullets: [
-                "Managed QA across 6 concurrent projects (booking, payment, finance, reservation, ops).",
-                "Reduced defect leakage to production by ~30% and monitored bugs using Grafana.",
-                "Automated 70% of the regression suite using Selenium and applied ISTQB techniques.",
-              ],
-            },
-          ],
-          matched_skills: ["Manual Testing", "Playwright", "Postman", "SQL"],
-          gaps: [],
-        },
-        discovered_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-      },
-      {
-        id: "job-2",
-        source: "JobStreet",
-        company: "PT BCA Digital",
-        position: "System Analyst / QA Lead",
-        location: "Remote",
-        salary_min: 14000000,
-        salary_max: 20000000,
-        job_url: "https://www.jobstreet.co.id/job/bca-qa-sysanalyst-202",
-        job_description: "Requires strong SQL data validation, API integration testing, Postman, JIRA, and Regression Testing.",
-        requirements: ["SQL", "API Testing", "Manual Testing", "JIRA"],
-        min_experience_years: 4,
-        match_score: 96.7,
-        status: "READY_TO_APPLY",
-        matched_skills: ["SQL", "API Testing", "Manual Testing"],
-        gaps: ["Cypress"],
-        discovered_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-      },
-      {
-        id: "job-3",
-        source: "Glints",
-        company: "ABC Sales Agency",
-        position: "Sales & QA Agent",
-        location: "Yogyakarta",
-        salary_min: 4000000,
-        salary_max: 4000000,
-        job_url: "https://glints.com/id/opportunities/jobs/sales-agency-303",
-        job_description: "Commission Only sales and basic QA check.",
-        match_score: 35.0,
-        status: "SKIPPED",
-        gaps: ["Commission Only Excluded"],
-        discovered_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-      },
-    ];
-    defaultJobs.forEach((j) => globalMockStore.set(j.id!, j));
   }
 }
 

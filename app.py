@@ -79,47 +79,29 @@ def cmd_search(args):
     orch = get_orchestrator(mode=mode)
     approval_ui = ApprovalConsole(console=console)
 
-    # Simulated/sample live feeds for first-wave Glints & JobStreet portals
-    sample_scraped_feeds = [
-        {
-            "source": "Glints",
-            "company": "Traveloka",
-            "title": "QA Automation Engineer",
-            "location": "Yogyakarta, Indonesia",
-            "salary": "IDR 12.000.000 - 18.000.000",
-            "url": "https://glints.com/id/opportunities/jobs/traveloka-qa-automation-101",
-            "description": "Looking for experienced QA Engineer with Manual Testing, API Testing, Postman, SQL, and Playwright."
-        },
-        {
-            "source": "JobStreet",
-            "company": "PT BCA Digital",
-            "title": "System Analyst / QA Lead",
-            "location": "Remote",
-            "salary": "Rp 14.000.000 - Rp 20.000.000",
-            "url": "https://www.jobstreet.co.id/job/bca-qa-sysanalyst-202",
-            "description": "Requires strong SQL data validation, API integration testing, Postman, JIRA, and Regression Testing."
-        },
-        {
-            "source": "Glints",
-            "company": "ABC Sales Agency",
-            "title": "Sales & QA Agent",
-            "location": "Yogyakarta",
-            "salary": "IDR 4.000.000",
-            "url": "https://glints.com/id/opportunities/jobs/sales-agency-303",
-            "description": "Commission Only sales and basic QA check."
-        }
-    ]
-
-    console.print(f"[bold green]Searching platforms (Glints, JobStreet)...[/bold green]")
-    glints_adapter = GlintsScraper()
+    console.print(f"[bold green]🔍 Menjalankan scraper langsung ke JobStreet & Glints Indonesia...[/bold green]")
     jobstreet_adapter = JobStreetScraper()
+    glints_adapter = GlintsScraper()
 
     normalized_jobs = []
-    for item in sample_scraped_feeds:
-        if item["source"] == "Glints":
-            normalized_jobs.append(glints_adapter.normalize_job(item))
-        else:
-            normalized_jobs.append(jobstreet_adapter.normalize_job(item))
+
+    # 1. Scrape real jobs from JobStreet Indonesia
+    try:
+        console.print("[dim]→ Mengambil lowongan QA Engineer dari JobStreet Indonesia...[/dim]")
+        js_jobs = jobstreet_adapter.scrape(keyword="QA-Engineer", limit=10)
+        normalized_jobs.extend(js_jobs)
+        console.print(f"[green]✓ Ditemukan {len(js_jobs)} lowongan nyata dari JobStreet[/green]")
+    except Exception as e:
+        console.print(f"[yellow]Peringatan scraper JobStreet:[/] {e}")
+
+    # 2. Scrape real jobs from Glints Indonesia
+    try:
+        console.print("[dim]→ Mengambil lowongan QA Engineer dari Glints Indonesia...[/dim]")
+        gl_jobs = glints_adapter.scrape(keyword="QA Engineer", limit=10)
+        normalized_jobs.extend(gl_jobs)
+        console.print(f"[green]✓ Ditemukan {len(gl_jobs)} lowongan nyata dari Glints[/green]")
+    except Exception as e:
+        console.print(f"[yellow]Peringatan scraper Glints:[/] {e}")
 
     found_count = len(normalized_jobs)
     processed_count = 0
@@ -135,6 +117,13 @@ def cmd_search(args):
                 console.print(f"   CV Generated: [dim]{processed.cv_file}[/dim]")
 
     console.print(f"\n[bold]Summary:[/] Found {found_count} | Processed {processed_count} | Qualified {qualified_count}")
+
+    # Otomatis sinkronkan hasil pencarian ke Web Dashboard
+    try:
+        from database.firestore_sync import sync_sqlite_to_firestore
+        sync_sqlite_to_firestore()
+    except Exception as e:
+        logger.warning(f"Sync to firestore/web skipped: {e}")
 
     if mode == "ASSISTED":
         cmd_pending(args)

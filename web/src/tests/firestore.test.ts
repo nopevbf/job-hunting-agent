@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from "vitest";
-import { FirestoreJobService } from "../lib/firestore";
+import { FirestoreJobService, clearMockStore } from "../lib/firestore";
 import { JobPostData } from "../lib/types";
 
 describe("FirestoreJobService", () => {
@@ -23,6 +23,7 @@ describe("FirestoreJobService", () => {
 
   beforeEach(() => {
     // Reset service with clean mock store
+    clearMockStore();
     service = new FirestoreJobService({ useMockStore: true });
   });
 
