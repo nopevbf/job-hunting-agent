@@ -1,0 +1,26 @@
+{
+  "target_roles": [
+    "QA Engineer",
+    "Quality Assurance",
+    "Software Quality Assurance",
+    "QA Automation",
+    "System Analyst",
+    "IT Quality Assurance"
+  ],
+  "target_locations": [
+    "Yogyakarta",
+    "Remote",
+    "Daerah Istimewa Yogyakarta"
+  ],
+  "minimum_salary": 8000000,
+  "max_experience_requirement": 5,
+  "exclude_keywords": [
+    "Sales",
+    "Marketing",
+    "Commission Only",
+    "Telemarketing",
+    "Account Executive",
+    "Insurance Agent",
+    "Driver"
+  ]
+}

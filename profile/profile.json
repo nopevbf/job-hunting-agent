@@ -1,0 +1,103 @@
+{
+  "name": "Eka Pratama",
+  "title": "QA Engineer / System Analyst",
+  "location": "Yogyakarta",
+  "email": "eka.pratama.qa@example.com",
+  "phone": "+6281234567890",
+  "linkedin": "https://linkedin.com/in/ekapratama-qa",
+  "github": "https://github.com/ekapratama",
+  "summary": "QA Engineer with 4+ years of experience in manual testing, API testing, and web automation. Proficient in designing test plans, writing test cases, API automation using Postman/REST, and database validation with SQL. Passionate about ensuring software quality across fintech and SaaS platforms.",
+  "skills": {
+    "Testing": [
+      "Manual Testing",
+      "Regression Testing",
+      "API Testing",
+      "Functional Testing",
+      "Integration Testing",
+      "UAT",
+      "Black-Box Testing"
+    ],
+    "Automation": [
+      "Playwright",
+      "Postman",
+      "Newman"
+    ],
+    "Database": [
+      "SQL",
+      "PostgreSQL",
+      "MySQL"
+    ],
+    "Development": [
+      "Python",
+      "JavaScript",
+      "HTML/CSS",
+      "Git"
+    ],
+    "Tools": [
+      "JIRA",
+      "GitLab",
+      "Swagger",
+      "DBeaver"
+    ]
+  },
+  "experiences": [
+    {
+      "company": "PT Solusi Teknologi Digital",
+      "role": "QA Engineer",
+      "location": "Yogyakarta",
+      "start_date": "2022-01",
+      "end_date": "Present",
+      "bullets": [
+        "Designed and executed 250+ manual and automated test cases for fintech core banking and payment services.",
+        "Implemented API automated tests using Postman and Newman, integrating into CI/CD pipeline to catch regressions early.",
+        "Conducted end-to-end browser regression automation using Playwright, reducing release regression testing time by 40%.",
+        "Collaborated with developers and product managers to clarify user stories and acceptance criteria in agile sprints."
+      ]
+    },
+    {
+      "company": "CV Inovasi Piranti Lunak",
+      "role": "Junior QA & System Analyst",
+      "location": "Yogyakarta",
+      "start_date": "2020-03",
+      "end_date": "2021-12",
+      "bullets": [
+        "Authored Software Requirement Specifications (SRS) and created Test Case Documents for ERP and CRM applications.",
+        "Performed SQL queries to validate backend transactions and data integrity during database migrations.",
+        "Logged and tracked defects using JIRA, communicating root cause analyses to engineering teams."
+      ]
+    }
+  ],
+  "educations": [
+    {
+      "degree": "Bachelor of Computer Science (S.Kom)",
+      "institution": "Universitas Gadjah Mada",
+      "graduation_year": "2020",
+      "gpa": "3.72"
+    }
+  ],
+  "certifications": [
+    {
+      "name": "ISTQB Certified Tester Foundation Level (CTFL)",
+      "issuer": "ISTQB",
+      "year": "2021"
+    }
+  ],
+  "languages": [
+    {
+      "language": "Bahasa Indonesia",
+      "proficiency": "Native"
+    },
+    {
+      "language": "English",
+      "proficiency": "Professional Working Proficiency"
+    }
+  ],
+  "screening_defaults": {
+    "expected_salary": 9000000,
+    "minimum_salary": 8000000,
+    "notice_period_days": 30,
+    "willing_to_relocate": false,
+    "years_of_experience": 4,
+    "work_authorization": "Indonesian Citizen"
+  }
+}
