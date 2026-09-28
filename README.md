@@ -22,11 +22,32 @@ Personal AI Job Hunting Agent lokal berbasis Python untuk mencari lowongan kerja
   - Export ke format ATS-friendly `.docx` (single-column, standard headings, no textboxes) dan snapshot riwayat `.json`.
 - **Screening Decision Gate**: Membedakan pertanyaan faktual (otomatis) dan pertanyaan ambigu/kustom (masuk status `NEED_REVIEW` tanpa menebak).
 - **Interactive Approval Console**: Terminal UI interaktif berbasis library `rich` dengan kartu detail lowongan, preview CV, opsi Apply / Skip.
+- **Web Dashboard (Vercel & Cloud Firestore)**: Antarmuka web modern dengan sistem desain **Warm Bento Glass** (Bento Grid 2.0, Liquid Glass, Sage Deep & Warm Terracotta), dilengkapi API Routes serverless, Firestore CRUD real-time, preview CV interaktif, dan modal import lowongan kustom.
 - **Microsoft To Do Integration**: Otomatis membuat task di Microsoft To Do via Microsoft Graph API saat lowongan berhasil diapply.
 - **3 Mode Operasi**:
   - `SCOUT`: Hanya mencari, menganalisis, dan menghasilkan CV tanpa apply.
   - `ASSISTED` (*Default*): Berhenti dan meminta persetujuan eksplisit pengguna sebelum submit.
   - `AUTO`: Melakukan submit otomatis hanya jika lolos seluruh kriteria ketat (Score $\ge 85$, lokasi Remote/target, gaji sesuai, kategori sesuai, tanpa pertanyaan kustom).
+
+---
+
+## 🌐 Web Dashboard (Next.js & Vercel)
+
+Aplikasi web berada di subfolder `web/` dan siap dideploy langsung ke **Vercel** dengan database **Cloud Firestore**.
+
+### Menjalankan Web Dashboard Lokal:
+```bash
+cd web
+npm install
+npm run dev
+```
+Buka browser di `http://localhost:3000`.
+
+### Deploy ke Vercel:
+1. Hubungkan repositori GitHub ini di [Vercel](https://vercel.com/new).
+2. Set **Root Directory** ke `web`.
+3. Masukkan Environment Variables sesuai `web/.env.example` (Firebase Project).
+4. Klik **Deploy**!
 
 ---
 
