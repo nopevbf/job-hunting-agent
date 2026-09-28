@@ -1,15 +1,16 @@
 "use client";
 
 import React from "react";
-import { Sparkles, PlusCircle, RefreshCw, Layers } from "lucide-react";
+import { Sparkles, PlusCircle, RefreshCw, ClipboardList } from "lucide-react";
 
 interface NavbarProps {
   onOpenImport: () => void;
+  onOpenReport: () => void;
   onRefresh: () => void;
   isRefreshing?: boolean;
 }
 
-export function Navbar({ onOpenImport, onRefresh, isRefreshing }: NavbarProps) {
+export function Navbar({ onOpenImport, onOpenReport, onRefresh, isRefreshing }: NavbarProps) {
   return (
     <header className="sticky top-0 z-40 w-full glass-nav transition-all duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between">
@@ -32,20 +33,29 @@ export function Navbar({ onOpenImport, onRefresh, isRefreshing }: NavbarProps) {
         </div>
 
         {/* Action Controls */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5">
+          <button
+            onClick={onOpenReport}
+            className="flex items-center gap-1.5 px-3 py-2 text-xs sm:text-sm font-medium text-ink-base rounded-bento-sm hover:bg-white/60 transition border border-line-subtle"
+            title="Buka Laporan Harian"
+          >
+            <ClipboardList className="w-4 h-4 text-sage-deep" />
+            <span className="hidden sm:inline">Laporan Harian</span>
+          </button>
+
           <button
             onClick={onRefresh}
             disabled={isRefreshing}
-            className="flex items-center gap-1.5 px-3.5 py-2 text-sm font-medium text-ink-muted hover:text-ink-base rounded-bento-sm hover:bg-white/40 transition"
+            className="flex items-center gap-1.5 px-3 py-2 text-xs sm:text-sm font-medium text-ink-muted hover:text-ink-base rounded-bento-sm hover:bg-white/40 transition"
             title="Refresh Data"
           >
             <RefreshCw className={`w-4 h-4 ${isRefreshing ? "animate-spin text-sage-deep" : ""}`} />
-            <span className="hidden sm:inline">Segarkan</span>
+            <span className="hidden md:inline">Segarkan</span>
           </button>
 
           <button
             onClick={onOpenImport}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-bento-sm bg-sage-deep hover:bg-[#284230] text-canvas-base text-sm font-semibold shadow-sm transition hover:shadow"
+            className="flex items-center gap-1.5 px-3.5 py-2 rounded-bento-sm bg-sage-deep hover:bg-[#284230] text-canvas-base text-xs sm:text-sm font-semibold shadow-sm transition hover:shadow"
           >
             <PlusCircle className="w-4 h-4 text-terracotta-soft" />
             <span>Import Lowongan</span>
