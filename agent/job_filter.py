@@ -2,6 +2,16 @@ import re
 from typing import Tuple, Dict, Any, List
 from database.models import JobPost
 
+# Countries/regions that are clearly outside Indonesia
+# Used when target includes "Indonesia" to exclude non-Indonesian jobs
+_NON_INDONESIA_LOCATIONS = [
+    "singapore", "malaysia", "usa", "united states", "united kingdom", "uk",
+    "london", "germany", "australia", "india", "japan", "china", "korea",
+    "vietnam", "thailand", "philippines", "europe", "hong kong", "taiwan",
+    "canada", "france", "netherlands", "sweden", "norway", "denmark",
+    "new zealand", "south africa", "brazil", "mexico", "dubai", "uae",
+]
+
 class JobFilter:
     def __init__(self, preferences: Dict[str, Any]):
         self.target_roles: List[str] = preferences.get("target_roles", [])
@@ -9,6 +19,8 @@ class JobFilter:
         self.minimum_salary: int = preferences.get("minimum_salary", 0)
         self.max_experience_requirement: int = preferences.get("max_experience_requirement", 99)
         self.exclude_keywords: List[str] = preferences.get("exclude_keywords", [])
+        # Detect if using Indonesia-wide mode (any target contains "indonesia")
+        self._indonesia_wide = any("indonesia" in loc for loc in self.target_locations)
 
     def is_role_relevant(self, title: str) -> bool:
         """
@@ -44,6 +56,27 @@ class JobFilter:
                 return True
 
         return False
+
+    def _is_location_accepted(self, job_loc: str) -> bool:
+        """
+        Determine if job location is acceptable.
+        - If Indonesia-wide mode: accept all Indonesian + remote, reject clearly non-Indonesian.
+        - If specific list mode: do substring match against target_locations.
+        """
+        job_loc_lower = job_loc.lower().strip()
+
+        # Empty location = accept (assume remote or undisclosed)
+        if not job_loc_lower:
+            return True
+
+        if self._indonesia_wide:
+            # Reject only if location clearly matches a non-Indonesian country/region
+            if any(country in job_loc_lower for country in _NON_INDONESIA_LOCATIONS):
+                return False
+            return True
+        else:
+            # Original behaviour: substring match against explicit list
+            return any(target in job_loc_lower for target in self.target_locations)
 
     def evaluate(self, job: JobPost) -> Tuple[bool, str]:
         """
@@ -82,9 +115,9 @@ class JobFilter:
 
         # 5. Check Location Compatibility
         if self.target_locations:
-            job_loc = (job.location or "").lower()
-            matched_loc = any(target in job_loc for target in self.target_locations)
-            if not matched_loc:
+            if not self._is_location_accepted(job.location or ""):
+                if self._indonesia_wide:
+                    return False, f"Location '{job.location}' is outside Indonesia"
                 return False, f"Location '{job.location}' not in target locations ({', '.join(self.target_locations)})"
 
         return True, "Passed"

@@ -65,7 +65,7 @@ def sample_profile_data():
 def sample_preferences_data():
     return {
         "target_roles": ["QA Engineer", "System Analyst"],
-        "target_locations": ["Yogyakarta", "Remote"],
+        "target_locations": ["Indonesia", "Remote", "Work From Home", "WFH", "Hybrid"],
         "minimum_salary": 8000000,
         "max_experience_requirement": 5,
         "exclude_keywords": ["Sales", "Marketing", "Commission Only"]

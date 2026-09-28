@@ -50,6 +50,9 @@ export default function DashboardPage() {
   const [searchQuery, setSearchQuery] = useState("QA Engineer");
   const [isScouting, setIsScouting] = useState(false);
   const [scoutMessage, setScoutMessage] = useState("");
+  const [scoutLogs, setScoutLogs] = useState<string[]>([]);
+  const [isScoutLogOpen, setIsScoutLogOpen] = useState(false);
+
 
   // Fetch jobs and stats from Firestore
   const fetchData = async () => {
@@ -75,42 +78,66 @@ export default function DashboardPage() {
     fetchData();
   }, []);
 
-  // Trigger Scout Search (Multi-Portal Search Agent)
-  const handleTriggerScout = async () => {
-    setIsScouting(true);
-    setScoutMessage(`Memindai platform (Glints, JobStreet, Dealls) untuk '${searchQuery}'...`);
-    try {
-      const res = await fetch("/api/scout", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ query: searchQuery }),
-      });
-      const json = await res.json();
-      if (json.success) {
-        setScoutMessage(`✓ Selesai: Memindai ${json.data.total_scanned} lowongan, ${json.data.qualified} lolos kualifikasi & di-generate CV.`);
-        await fetchData();
+  // Trigger Scout Search via SSE stream
+  const handleTriggerScout = () => {
+    if (isScouting) return;
 
-        // If in Auto-Apply mode, trigger auto application for high matches
-        if (mode === "AUTO") {
-          for (const newJob of json.data.jobs) {
-            const decision = evaluateModeDecision({ mode: "AUTO", job: newJob });
-            if (decision.action === "AUTO_APPLY") {
-              await fetch(`/api/jobs/${newJob.id}`, {
-                method: "PATCH",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ status: "APPLIED" }),
-              });
+    setIsScouting(true);
+    setScoutLogs([]);
+    setIsScoutLogOpen(true);
+    setScoutMessage("");
+
+    const url = `/api/scout/stream?query=${encodeURIComponent(searchQuery)}`;
+    const es = new EventSource(url);
+
+    es.onmessage = async (e: MessageEvent) => {
+      try {
+        const event = JSON.parse(e.data) as {
+          step: string;
+          message: string;
+          count?: number;
+          total?: number;
+          qualified?: number;
+        };
+
+        // Add log line (keep max 30)
+        setScoutLogs((prev) => [...prev.slice(-29), event.message]);
+
+        if (event.step === "done") {
+          es.close();
+          setIsScouting(false);
+          setScoutMessage(event.message);
+          await fetchData();
+          // If in Auto-Apply mode, trigger auto application for high matches
+          if (mode === "AUTO") {
+            const res = await fetch("/api/jobs");
+            const json = await res.json();
+            if (json.success) {
+              for (const job of json.data) {
+                const decision = evaluateModeDecision({ mode: "AUTO", job });
+                if (decision.action === "AUTO_APPLY") {
+                  await fetch(`/api/jobs/${job.id}`, {
+                    method: "PATCH",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ status: "APPLIED" }),
+                  });
+                }
+              }
+              await fetchData();
             }
           }
-          await fetchData();
+          setTimeout(() => setScoutMessage(""), 8000);
         }
+      } catch {
+        // Ignore parse errors
       }
-    } catch (err) {
-      setScoutMessage(`Gagal menjalankan scout: ${(err as Error).message}`);
-    } finally {
+    };
+
+    es.onerror = () => {
+      es.close();
       setIsScouting(false);
-      setTimeout(() => setScoutMessage(""), 6000);
-    }
+      setScoutLogs((prev) => [...prev, "⚠️ Koneksi stream terputus."]);
+    };
   };
 
   // Handle Apply Click
@@ -268,13 +295,58 @@ export default function DashboardPage() {
           </div>
         </section>
 
-        {/* Scout Status Banner */}
-        {scoutMessage && (
+
+        {/* Scout Log Panel — Real-time progress log saat pencarian berjalan */}
+        {(isScouting || (scoutLogs.length > 0 && isScoutLogOpen)) && (
+          <div className="rounded-bento-md border border-sage-primary/40 bg-sage-container/50 overflow-hidden animate-fadeIn">
+            {/* Panel Header */}
+            <div className="flex items-center justify-between px-4 py-2.5 border-b border-sage-primary/20 bg-sage-container/70">
+              <div className="flex items-center gap-2">
+                {isScouting ? (
+                  <Loader2 className="w-3.5 h-3.5 animate-spin text-sage-deep" />
+                ) : (
+                  <CheckCircle2 className="w-3.5 h-3.5 text-sage-deep" />
+                )}
+                <span className="text-xs font-semibold text-sage-deep">
+                  {isScouting ? `🔍 Scout sedang berjalan — mencari di semua portal...` : `✅ Pencarian selesai`}
+                </span>
+              </div>
+              <button
+                onClick={() => setIsScoutLogOpen((v) => !v)}
+                className="text-ink-muted hover:text-ink-base transition text-xs px-2 py-0.5 rounded hover:bg-white/40"
+              >
+                {isScoutLogOpen ? "▲ Sembunyikan" : "▼ Tampilkan"}
+              </button>
+            </div>
+
+            {/* Log Lines */}
+            {isScoutLogOpen && (
+              <div className="px-4 py-3 max-h-48 overflow-y-auto space-y-1 font-mono">
+                {scoutLogs.length === 0 ? (
+                  <p className="text-xs text-ink-muted italic">Menginisialisasi...</p>
+                ) : (
+                  scoutLogs.map((log, i) => (
+                    <p key={i} className="text-xs text-ink-base leading-relaxed">
+                      {log}
+                    </p>
+                  ))
+                )}
+                {isScouting && (
+                  <p className="text-xs text-ink-muted animate-pulse">▋</p>
+                )}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Scout Success Banner (after done) */}
+        {scoutMessage && !isScouting && (
           <div className="p-3 rounded-bento-sm bg-sage-container/70 border border-sage-primary/30 text-sage-deep text-xs font-semibold flex items-center gap-2 animate-fadeIn">
             <CheckCircle2 className="w-4 h-4 text-sage-deep flex-shrink-0" />
             <span>{scoutMessage}</span>
           </div>
         )}
+
 
         {/* Top Bento Stats Bar */}
         <section>

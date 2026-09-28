@@ -23,7 +23,7 @@ interface RawRealJob {
 
 /**
  * Fetches real live tech jobs from verified public job APIs and local sync cache.
- * Integrates Kalibrr, Remotive, and synced local scrapers.
+ * Portals: Kalibrr (ID) → Jobicy (Remote) → Remotive (Remote) → Findwork (Tech) → Arbeitnow (fallback) → synced local
  */
 async function fetchRealLiveJobs(query: string): Promise<RawRealJob[]> {
   const realJobs: RawRealJob[] = [];
@@ -67,7 +67,39 @@ async function fetchRealLiveJobs(query: string): Promise<RawRealJob[]> {
     console.warn("Notice: Kalibrr live fetch unavailable:", err);
   }
 
-  // 2. Fetch live jobs from Remotive API
+  // 2. Fetch worldwide remote jobs from Jobicy API
+  try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+    const res = await fetch(`https://jobicy.com/api/v2/remote-jobs?tag=${encodeURIComponent(query)}&count=10`, {
+      signal: controller.signal,
+      headers: { "User-Agent": "PersonalJobAgent/1.0" },
+    });
+    clearTimeout(timeoutId);
+
+    if (res.ok) {
+      const data = await res.json();
+      const items = Array.isArray(data.jobs) ? data.jobs : [];
+      for (const item of items.slice(0, 8)) {
+        if (item.jobTitle && item.url) {
+          const rawDesc = (item.jobDescription || "").replace(/<[^>]*>?/gm, " ").trim();
+          realJobs.push({
+            source: "Jobicy",
+            company: item.companyName || "Confidential",
+            position: item.jobTitle,
+            location: item.jobGeo || "Remote",
+            job_url: item.url,
+            description: rawDesc.slice(0, 500) || item.jobTitle,
+            requirements: Array.isArray(item.jobIndustry) ? item.jobIndustry : ["Testing", "QA"],
+          });
+        }
+      }
+    }
+  } catch (err) {
+    console.warn("Notice: Jobicy live fetch unavailable:", err);
+  }
+
+  // 3. Fetch live jobs from Remotive API
   try {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
@@ -99,7 +131,41 @@ async function fetchRealLiveJobs(query: string): Promise<RawRealJob[]> {
     console.warn("Notice: Remotive live fetch unavailable:", err);
   }
 
-  // 2. Fetch live jobs from Arbeitnow API
+  // 4. Fetch worldwide tech jobs from Findwork API
+  try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+    const res = await fetch(`https://findwork.dev/api/jobs/?search=${encodeURIComponent(query)}`, {
+      signal: controller.signal,
+      headers: { "User-Agent": "PersonalJobAgent/1.0" },
+    });
+    clearTimeout(timeoutId);
+
+    if (res.ok) {
+      const data = await res.json();
+      const items = Array.isArray(data.results) ? data.results : [];
+      for (const item of items.slice(0, 8)) {
+        if (item.role && item.url) {
+          const rawDesc = (item.text || "").replace(/<[^>]*>?/gm, " ").trim();
+          realJobs.push({
+            source: "Findwork",
+            company: item.company_name || "Confidential",
+            position: item.role,
+            location: item.location || "Remote",
+            job_url: item.url,
+            description: rawDesc.slice(0, 500) || item.role,
+            requirements: Array.isArray(item.keywords) && item.keywords.length > 0
+              ? item.keywords
+              : ["Testing", "QA", "Automation"],
+          });
+        }
+      }
+    }
+  } catch (err) {
+    console.warn("Notice: Findwork live fetch unavailable:", err);
+  }
+
+  // 5. Fetch jobs from Arbeitnow API (fallback when results still low)
   if (realJobs.length < 5) {
     try {
       const controller = new AbortController();
@@ -133,7 +199,7 @@ async function fetchRealLiveJobs(query: string): Promise<RawRealJob[]> {
     }
   }
 
-  // 3. Check for synced real jobs from Python Playwright scraper (JobStreet & Glints)
+  // 6. Check for synced real jobs from Python Playwright scraper (JobStreet & Glints)
   try {
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     const synced = require("@/lib/synced_jobs.json");

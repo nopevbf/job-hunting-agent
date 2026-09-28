@@ -62,8 +62,10 @@ def test_filter_experience_bva(job_filter, sample_job_post):
     assert "Experience requirement (6) exceeds max (5)" in reason
 
 def test_filter_location_matching(job_filter, sample_job_post):
-    """Equivalence Partitioning: Accepted locations vs non-matching location."""
-    # Yogyakarta -> Pass
+    """Equivalence Partitioning: Accepted locations vs non-matching location.
+    LOC-001: Indonesia-wide location filter — terima semua kota Indonesia, tolak luar negeri.
+    """
+    # Yogyakarta -> Pass (Indonesian city)
     job_yk = JobPost(**dict(sample_job_post, location="Yogyakarta, Indonesia"))
     assert job_filter.evaluate(job_yk)[0] is True
 
@@ -71,11 +73,44 @@ def test_filter_location_matching(job_filter, sample_job_post):
     job_rem = JobPost(**dict(sample_job_post, location="Fully Remote"))
     assert job_filter.evaluate(job_rem)[0] is True
 
-    # Jakarta (not in Yogyakarta/Remote) -> Reject
+    # Jakarta -> Pass (Indonesian city, previously rejected)
     job_jkt = JobPost(**dict(sample_job_post, location="Jakarta Selatan"))
-    is_valid, reason = job_filter.evaluate(job_jkt)
-    assert is_valid is False
-    assert "Location 'Jakarta Selatan' not in target locations" in reason
+    is_valid_jkt, reason_jkt = job_filter.evaluate(job_jkt)
+    assert is_valid_jkt is True, f"Jakarta should be accepted for Indonesia target, got: {reason_jkt}"
+
+    # Bandung -> Pass (Indonesian city)
+    job_bdg = JobPost(**dict(sample_job_post, location="Bandung, Jawa Barat"))
+    assert job_filter.evaluate(job_bdg)[0] is True
+
+    # Surabaya -> Pass (Indonesian city)
+    job_sby = JobPost(**dict(sample_job_post, location="Surabaya"))
+    assert job_filter.evaluate(job_sby)[0] is True
+
+    # No location info -> Pass (could be remote)
+    job_empty = JobPost(**dict(sample_job_post, location=""))
+    assert job_filter.evaluate(job_empty)[0] is True
+
+    # Singapore -> Reject (outside Indonesia)
+    job_sg = JobPost(**dict(sample_job_post, location="Singapore"))
+    is_valid_sg, reason_sg = job_filter.evaluate(job_sg)
+    assert is_valid_sg is False, "Singapore should be rejected (outside Indonesia)"
+    assert "outside Indonesia" in reason_sg
+
+    # London -> Reject (outside Indonesia)
+    job_lon = JobPost(**dict(sample_job_post, location="London, UK"))
+    is_valid_lon, _ = job_filter.evaluate(job_lon)
+    assert is_valid_lon is False, "London should be rejected (outside Indonesia)"
+
+
+def test_filter_location_wfh_hybrid(job_filter, sample_job_post):
+    """LOC-002: WFH dan Hybrid harus diterima sebagai lokasi valid."""
+    # WFH -> Pass
+    job_wfh = JobPost(**dict(sample_job_post, location="Work From Home"))
+    assert job_filter.evaluate(job_wfh)[0] is True
+
+    # Hybrid Jakarta -> Pass (has Indonesian city)
+    job_hybrid = JobPost(**dict(sample_job_post, location="Hybrid - Jakarta"))
+    assert job_filter.evaluate(job_hybrid)[0] is True
 
 def test_filter_rejects_irrelevant_job_roles(job_filter, sample_job_post):
     """SRCH-REL-002: Filter must reject jobs with titles irrelevant to target_roles."""
