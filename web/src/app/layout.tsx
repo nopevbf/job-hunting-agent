@@ -27,8 +27,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="id" className={`${plusJakarta.variable} ${manrope.variable}`}>
-      <body className="antialiased selection:bg-terracotta-soft selection:text-terracotta-accent">
+    <html
+      lang="id"
+      className={`${plusJakarta.variable} ${manrope.variable}`}
+      suppressHydrationWarning
+    >
+      <body
+        className="antialiased selection:bg-terracotta-soft selection:text-terracotta-accent"
+        suppressHydrationWarning
+      >
         {children}
       </body>
     </html>
