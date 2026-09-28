@@ -1,103 +1,195 @@
 {
-  "name": "Eka Pratama",
-  "title": "QA Engineer / System Analyst",
-  "location": "Yogyakarta",
-  "email": "eka.pratama.qa@example.com",
-  "phone": "+6281234567890",
-  "linkedin": "https://linkedin.com/in/ekapratama-qa",
-  "github": "https://github.com/ekapratama",
-  "summary": "QA Engineer with 4+ years of experience in manual testing, API testing, and web automation. Proficient in designing test plans, writing test cases, API automation using Postman/REST, and database validation with SQL. Passionate about ensuring software quality across fintech and SaaS platforms.",
+  "name": "Firman Aji Prasetyo",
+  "title": "QA Engineer | Test Automation | ISTQB-Aligned",
+  "location": "Srumbung, Jawa Tengah",
+  "email": "firajitio@gmail.com",
+  "phone": "+62-851-7337-0796",
+  "linkedin": "https://linkedin.com/in/nopevbf",
+  "github": "https://github.com/nopevbf/qaportfolio",
+  "portfolio": "https://github.com/nopevbf",
+  "summary": "QA Engineer with 1.5+ years of experience delivering quality across 6 concurrent projects in PropertyTech and Fintech domains. Specializes in reducing defect leakage, building test automation suites (Selenium, Playwright, Appium), and applying ISTQB-aligned techniques including equivalence partitioning, boundary value analysis, and decision table testing. Proven track record of cutting regression time by 67% and driving 30% reduction in production defects through structured test strategy, early risk identification, and collaborative agile workflows.",
   "skills": {
     "Testing": [
       "Manual Testing",
+      "Exploratory Testing",
       "Regression Testing",
-      "API Testing",
       "Functional Testing",
-      "Integration Testing",
-      "UAT",
-      "Black-Box Testing"
+      "Test Case Design",
+      "Test Scenario Development",
+      "Bug Reporting",
+      "Risk-Based Testing"
     ],
     "Automation": [
+      "Selenium",
       "Playwright",
+      "Appium",
+      "Robot Framework",
+      "Katalon Studio"
+    ],
+    "API & Performance": [
       "Postman",
-      "Newman"
+      "JMeter"
     ],
-    "Database": [
-      "SQL",
-      "PostgreSQL",
-      "MySQL"
+    "Monitoring & Observability": [
+      "Grafana"
     ],
-    "Development": [
-      "Python",
-      "JavaScript",
-      "HTML/CSS",
+    "Methodologies": [
+      "ISTQB (EP, BVA, Decision Table, State Transition)",
+      "Agile / Scrum / Kanban",
+      "STLC"
+    ],
+    "Tools & Platforms": [
+      "JIRA",
+      "Microsoft Excel",
+      "Trello",
+      "Jenkins / GitLab CI (concepts)",
       "Git"
     ],
-    "Tools": [
-      "JIRA",
-      "GitLab",
-      "Swagger",
-      "DBeaver"
+    "Programming": [
+      "JavaScript",
+      "TypeScript",
+      "Java",
+      "Python",
+      "SQL"
     ]
   },
   "experiences": [
     {
-      "company": "PT Solusi Teknologi Digital",
-      "role": "QA Engineer",
-      "location": "Yogyakarta",
-      "start_date": "2022-01",
+      "company": "PT. Royal D'Paragon Land",
+      "role": "Freelance Software Quality Assurance",
+      "location": "Yogyakarta, Indonesia · Remote",
+      "start_date": "2026-04",
       "end_date": "Present",
+      "description": "Responsible for end-to-end QA on freelance projects, from test scenario design to catching edge-case bugs, while mentoring incoming QA engineers and collaborating remotely with developers and vendors.",
       "bullets": [
-        "Designed and executed 250+ manual and automated test cases for fintech core banking and payment services.",
-        "Implemented API automated tests using Postman and Newman, integrating into CI/CD pipeline to catch regressions early.",
-        "Conducted end-to-end browser regression automation using Playwright, reducing release regression testing time by 40%.",
-        "Collaborated with developers and product managers to clarify user stories and acceptance criteria in agile sprints."
+        "Handle 2–3 concurrent freelance QA projects end-to-end",
+        "Continue tracing bugs using Grafana",
+        "Mentor incoming QA engineers with hands-on approaches",
+        "Collaborate remotely with developers and vendors across time zones"
       ]
     },
     {
-      "company": "CV Inovasi Piranti Lunak",
-      "role": "Junior QA & System Analyst",
-      "location": "Yogyakarta",
-      "start_date": "2020-03",
-      "end_date": "2021-12",
+      "company": "PT. Royal D'Paragon Land",
+      "role": "Quality Assurance Engineer",
+      "location": "Depok, Yogyakarta · On-site",
+      "start_date": "2025-03",
+      "end_date": "2026-04",
+      "description": "Responsible for both manual and automation testing across 6 concurrent projects, tracing bugs, and collaborating with developer and product teams to ensure release quality.",
       "bullets": [
-        "Authored Software Requirement Specifications (SRS) and created Test Case Documents for ERP and CRM applications.",
-        "Performed SQL queries to validate backend transactions and data integrity during database migrations.",
-        "Logged and tracked defects using JIRA, communicating root cause analyses to engineering teams."
+        "Managed QA across 6 concurrent projects (booking, payment, finance, reservation, self check-in, ops)",
+        "Reduced defect leakage to production by ~30%",
+        "Traced and monitored bugs using Grafana",
+        "Automated 70% of the regression suite using Selenium",
+        "Applied ISTQB techniques (EP, BVA, decision table) on complex business logic",
+        "Conducted cross-browser and cross-device validation"
+      ]
+    },
+    {
+      "company": "PT. Royal D'Paragon Land",
+      "role": "Staff IT QA",
+      "location": "Depok, Yogyakarta · On-site",
+      "start_date": "2024-12",
+      "end_date": "2025-03",
+      "description": "Responsible for coordinating QA coverage across teams and standardizing bug reporting processes during the project's early ramp-up phase.",
+      "bullets": [
+        "Appointed PIC IT QA within one month, coordinating across product, frontend, backend, ops",
+        "Standardized bug report format, accelerating resolution",
+        "Recognized within first month for strong performance"
+      ]
+    },
+    {
+      "company": "Test IO Community",
+      "role": "Software Tester (Freelance)",
+      "location": "Remote",
+      "start_date": "2024-11",
+      "end_date": "Present",
+      "description": "Performs crowdtesting for global clients across Fintech, E-Commerce, and SaaS platforms, delivering high-quality, reproducible bug reports within time-boxed test cycles.",
+      "bullets": [
+        "Executed manual and exploratory testing across diverse web applications within tight time constraints",
+        "Produced detailed defect reports (reproduction steps, expected vs. actual, screenshots, severity) that minimized report rejections",
+        "Validated bug fixes through retesting and regression checks to prevent reintroduced defects",
+        "Rapidly adapted to new products and business rules across multiple test cycles"
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "name": "TaniVibe — Agricultural Early Warning System",
+      "stack": "React, TypeScript, Gemini 2.5 Flash, Open-Meteo API, Cloud Run",
+      "url": "https://github.com/nopevbf",
+      "bullets": [
+        "Built an AI-powered weather advisory system for Indonesian farmers, generating AMAN/WASPADA/BAHAYA risk-level alerts in Bahasa Indonesia using Gemini multimodal LLM and real-time weather data",
+        "Deployed via Google Cloud Run with CI/CD integration; features include plant diagnosis via image upload, FarmMemory persistent context, and agroclimate threshold classification"
+      ]
+    },
+    {
+      "name": "AI Script Generator",
+      "stack": "React, TypeScript, LLM Vision API",
+      "bullets": [
+        "Developing a short-form video script generator (TikTok, Reels, YouTube Shorts) with two core flows: Ide ke Script and Foto Produk ke Script, using structured JSON prompt templates and vision-capable LLMs"
+      ]
+    },
+    {
+      "name": "Automated MR Review Bot",
+      "stack": "GitHub Actions, Gemini API, YAML",
+      "url": "https://github.com/nopevbf",
+      "bullets": [
+        "Built a GitHub Actions workflow for automated merge request reviews using Gemini API, applying ISTQB-based QA standards with exponential backoff retry logic and Bahasa Indonesia review output"
       ]
     }
   ],
   "educations": [
     {
-      "degree": "Bachelor of Computer Science (S.Kom)",
-      "institution": "Universitas Gadjah Mada",
-      "graduation_year": "2020",
-      "gpa": "3.72"
+      "degree": "Bachelor of Informatics Engineering (S.Kom)",
+      "institution": "University of Muhammadiyah Magelang",
+      "graduation_year": "2022",
+      "gpa": "3.80 / 4.00",
+      "notes": "Active member, BEM – Communication & Information Division"
     }
   ],
   "certifications": [
     {
-      "name": "ISTQB Certified Tester Foundation Level (CTFL)",
-      "issuer": "ISTQB",
-      "year": "2021"
+      "name": "Programmer Certification",
+      "issuer": "Badan Nasional Sertifikasi Profesi (BNSP)",
+      "year": "2022"
+    },
+    {
+      "name": "TOEFL ITP Prediction Test",
+      "issuer": "Institutional Testing",
+      "year": "2022"
+    },
+    {
+      "name": "Ethical Hacking – Cyber Novice",
+      "issuer": "Fresh Graduate Academy",
+      "year": "2022"
+    },
+    {
+      "name": "JavaScript & Node.js (JavaScript Engineer)",
+      "issuer": "Course-Net",
+      "year": "2022"
+    },
+    {
+      "name": "Java – Object-Oriented Programming",
+      "issuer": "Course-Net",
+      "year": "2022"
     }
   ],
   "languages": [
     {
-      "language": "Bahasa Indonesia",
+      "language": "Indonesian",
       "proficiency": "Native"
     },
     {
       "language": "English",
-      "proficiency": "Professional Working Proficiency"
+      "proficiency": "Intermediate (Reading, Writing, Conversation)"
     }
   ],
   "screening_defaults": {
-    "expected_salary": 9000000,
-    "minimum_salary": 8000000,
-    "notice_period_days": 30,
+    "expected_salary": 8000000,
+    "minimum_salary": 6000000,
+    "notice_period_days": 14,
     "willing_to_relocate": false,
-    "years_of_experience": 4,
+    "years_of_experience": 1.5,
     "work_authorization": "Indonesian Citizen"
   }
 }

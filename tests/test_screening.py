@@ -8,12 +8,12 @@ def evaluator(sample_profile_data, sample_preferences_data):
 
 def test_resolve_factual_questions(evaluator):
     """Happy path: factual questions are resolved automatically from profile."""
-    assert evaluator.resolve_question("What is your full name?") == "Eka Pratama"
-    assert evaluator.resolve_question("Email address?") == "eka.qa@example.com"
-    assert evaluator.resolve_question("Phone number?") == "+6281234567890"
-    assert evaluator.resolve_question("Current city / location?") == "Yogyakarta"
-    assert evaluator.resolve_question("How many years of experience in QA do you have?") == 4
-    assert evaluator.resolve_question("What is your expected salary?") == 9000000
+    assert evaluator.resolve_question("What is your full name?") == "Firman Aji Prasetyo"
+    assert evaluator.resolve_question("Email address?") == "firajitio@gmail.com"
+    assert evaluator.resolve_question("Phone number?") == "+62-851-7337-0796"
+    assert evaluator.resolve_question("Current city / location?") == "Srumbung, Jawa Tengah"
+    assert evaluator.resolve_question("How many years of experience in QA do you have?") == 1.5
+    assert evaluator.resolve_question("What is your expected salary?") == 8000000
 
 def test_unresolved_question_triggers_need_review(evaluator):
     """Custom / unknown question cannot be guessed and must trigger NEED_REVIEW."""

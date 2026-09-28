@@ -89,7 +89,10 @@ export async function POST(request: Request) {
       }
 
       // 2. Score Calculation (7 Dimensions)
-      const userSkills = ["playwright", "api testing", "postman", "sql", "manual testing", "regression testing"];
+      const userSkills = [
+        "selenium", "playwright", "appium", "postman", "jmeter", "sql",
+        "manual testing", "regression testing", "istqb", "grafana", "git", "python", "javascript"
+      ];
       const matched = item.requirements.filter((r) => userSkills.includes(r.toLowerCase()));
       const gaps = item.requirements.filter((r) => !userSkills.includes(r.toLowerCase()));
 
@@ -107,24 +110,24 @@ export async function POST(request: Request) {
 
       // 3. Tailored CV Content
       const tailoredCV: TailoredCVContent = {
-        name: "Eka Pratama",
+        name: "Firman Aji Prasetyo",
         title: item.position,
-        summary: `QA Engineer with 4+ years of experience in manual testing, API testing, and web automation with Playwright. Dedicated to high-standard quality engineering.`,
+        summary: `QA Engineer with 1.5+ years of experience delivering quality across 6 concurrent projects in PropertyTech and Fintech domains. Specializes in test automation (Selenium, Playwright), ISTQB-aligned techniques, and reducing defect leakage.`,
         skills: {
           "Prioritized Stack": matched,
-          "Database & Development": ["SQL", "PostgreSQL", "Python", "JavaScript"],
+          "Database & Development": ["SQL", "Python", "JavaScript", "Grafana"],
         },
         experiences: [
           {
-            company: "PT Solusi Teknologi Digital",
-            role: "QA Engineer",
-            location: "Yogyakarta",
-            start_date: "2022-01",
-            end_date: "Present",
+            company: "PT. Royal D'Paragon Land",
+            role: "Quality Assurance Engineer",
+            location: "Depok, Yogyakarta · On-site",
+            start_date: "2025-03",
+            end_date: "2026-04",
             bullets: [
-              "Designed and executed 250+ manual and automated test cases for fintech core services.",
-              "Implemented API automated tests using Postman and Newman, integrating into CI/CD pipeline.",
-              "Conducted end-to-end browser regression automation using Playwright, reducing regression time by 40%.",
+              "Managed QA across 6 concurrent projects (booking, payment, finance, reservation, ops).",
+              "Reduced defect leakage to production by ~30% and monitored bugs using Grafana.",
+              "Automated 70% of the regression suite using Selenium and applied ISTQB techniques.",
             ],
           },
         ],

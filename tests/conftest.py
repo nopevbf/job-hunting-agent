@@ -6,14 +6,14 @@ from pathlib import Path
 @pytest.fixture
 def sample_profile_data():
     return {
-        "name": "Eka Pratama",
-        "title": "QA Engineer",
-        "location": "Yogyakarta",
-        "email": "eka.qa@example.com",
-        "phone": "+6281234567890",
-        "linkedin": "https://linkedin.com/in/eka",
-        "github": "https://github.com/eka",
-        "summary": "QA Engineer with 4 years testing fintech and web applications.",
+        "name": "Firman Aji Prasetyo",
+        "title": "QA Engineer | Test Automation | ISTQB-Aligned",
+        "location": "Srumbung, Jawa Tengah",
+        "email": "firajitio@gmail.com",
+        "phone": "+62-851-7337-0796",
+        "linkedin": "https://linkedin.com/in/nopevbf",
+        "github": "https://github.com/nopevbf/qaportfolio",
+        "summary": "QA Engineer with 1.5+ years of experience delivering quality across 6 concurrent projects in PropertyTech and Fintech domains.",
         "skills": {
             "Testing": ["Manual Testing", "API Testing", "Regression Testing"],
             "Automation": ["Playwright", "Postman"],
@@ -53,11 +53,11 @@ def sample_profile_data():
             {"language": "English", "proficiency": "Professional"}
         ],
         "screening_defaults": {
-            "expected_salary": 9000000,
-            "minimum_salary": 8000000,
-            "notice_period_days": 30,
+            "expected_salary": 8000000,
+            "minimum_salary": 6000000,
+            "notice_period_days": 14,
             "willing_to_relocate": False,
-            "years_of_experience": 4
+            "years_of_experience": 1.5
         }
     }
 

@@ -4,16 +4,18 @@ import { JobPostData, TailoredCVContent } from "@/lib/types";
 
 // Master Profile for truth-preserving evaluation
 const USER_PROFILE = {
-  name: "Eka Pratama",
-  title: "QA Engineer / System Analyst",
+  name: "Firman Aji Prasetyo",
+  title: "QA Engineer | Test Automation | ISTQB-Aligned",
   skills: [
-    "manual testing", "regression testing", "api testing", "functional testing",
-    "playwright", "postman", "newman", "sql", "postgresql", "mysql", "python",
-    "javascript", "jira", "gitlab", "swagger", "dbeaver"
+    "manual testing", "exploratory testing", "regression testing", "functional testing",
+    "test case design", "test scenario development", "bug reporting", "risk-based testing",
+    "selenium", "playwright", "appium", "robot framework", "katalon studio",
+    "postman", "jmeter", "grafana", "istqb", "agile", "scrum", "kanban", "stlc",
+    "jira", "trello", "git", "javascript", "typescript", "java", "python", "sql"
   ],
-  years_exp: 4,
+  years_exp: 1.5,
   location: "yogyakarta",
-  min_salary: 8000000
+  min_salary: 6000000
 };
 
 export async function POST(request: Request) {
@@ -65,21 +67,22 @@ export async function POST(request: Request) {
     const tailoredCV: TailoredCVContent = {
       name: USER_PROFILE.name,
       title: USER_PROFILE.title,
-      summary: `QA Engineer with 4+ years of experience in manual testing, API testing, and web automation with Playwright. Dedicated to high-standard quality engineering.`,
+      summary: `QA Engineer with 1.5+ years of experience delivering quality across 6 concurrent projects in PropertyTech and Fintech domains. Specializes in test automation (Selenium, Playwright), ISTQB-aligned techniques, and reducing defect leakage.`,
       skills: {
         "Prioritized Testing & Automation": matchedSkills,
-        "Database & Dev": ["SQL", "Python", "JavaScript"],
+        "Programming & Database": ["JavaScript", "Python", "SQL"],
       },
       experiences: [
         {
-          company: "PT Solusi Teknologi Digital",
-          role: "QA Engineer",
-          location: "Yogyakarta",
-          start_date: "2022-01",
-          end_date: "Present",
+          company: "PT. Royal D'Paragon Land",
+          role: "Quality Assurance Engineer",
+          location: "Depok, Yogyakarta · On-site",
+          start_date: "2025-03",
+          end_date: "2026-04",
           bullets: [
-            "Conducted end-to-end browser regression automation using Playwright.",
-            "Implemented API automated tests using Postman and Newman.",
+            "Managed QA across 6 concurrent projects (booking, payment, finance, reservation, ops).",
+            "Reduced defect leakage to production by ~30% and monitored bugs using Grafana.",
+            "Automated 70% of the regression suite using Selenium and applied ISTQB techniques.",
           ],
         },
       ],

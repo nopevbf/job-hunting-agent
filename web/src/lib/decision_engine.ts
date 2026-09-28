@@ -16,13 +16,13 @@ export interface ScreeningResolution {
 }
 
 const CANDIDATE_DEFAULTS = {
-  name: "Eka Pratama",
-  email: "eka.pratama.qa@example.com",
-  phone: "+6281234567890",
-  location: "Yogyakarta",
-  expected_salary: 9000000,
-  years_of_experience: 4,
-  notice_period_days: 30,
+  name: "Firman Aji Prasetyo",
+  email: "firajitio@gmail.com",
+  phone: "+62-851-7337-0796",
+  location: "Srumbung, Jawa Tengah",
+  expected_salary: 8000000,
+  years_of_experience: 1.5,
+  notice_period_days: 14,
   willing_to_relocate: false,
   work_authorization: "Indonesian Citizen",
 };

@@ -83,7 +83,7 @@ def test_generate_docx_file_structure(cv_builder, sample_job_post):
     full_text = " ".join(paragraphs_text)
 
     # Name and Title should be in document
-    assert "Eka Pratama" in full_text
+    assert "Firman Aji Prasetyo" in full_text
     assert "QA Engineer" in full_text
     assert "professional experience" in full_text.lower()
     assert "technical skills" in full_text.lower()

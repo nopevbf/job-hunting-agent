@@ -126,17 +126,19 @@ export function CVPreviewModal({ job, onClose }: CVPreviewModalProps) {
                 {/* Candidate Header */}
                 <div className="border-b border-line-subtle pb-4">
                   <h2 className="font-display font-extrabold text-2xl text-ink-base">
-                    {cv?.name || "Eka Pratama"}
+                    {cv?.name || "Firman Aji Prasetyo"}
                   </h2>
                   <div className="text-sm font-semibold text-sage-deep mt-0.5">
-                    {cv?.title || "QA Engineer / System Analyst"}
+                    {cv?.title || "QA Engineer | Test Automation | ISTQB-Aligned"}
                   </div>
                   <div className="text-xs text-ink-muted mt-1.5 flex flex-wrap gap-3">
-                    <span>Yogyakarta, Indonesia</span>
+                    <span>Srumbung, Jawa Tengah</span>
                     <span>•</span>
-                    <span>eka.pratama.qa@example.com</span>
+                    <span>firajitio@gmail.com</span>
                     <span>•</span>
-                    <span>+6281234567890</span>
+                    <span>+62-851-7337-0796</span>
+                    <span>•</span>
+                    <span>linkedin.com/in/nopevbf</span>
                   </div>
                 </div>
 
@@ -147,7 +149,7 @@ export function CVPreviewModal({ job, onClose }: CVPreviewModalProps) {
                   </h4>
                   <p className="text-xs text-ink-base leading-relaxed">
                     {cv?.summary ||
-                      "QA Engineer with 4+ years of experience in manual testing, API testing, and web automation with Playwright. Dedicated to high-standard quality engineering across fintech and SaaS platforms."}
+                      "QA Engineer with 1.5+ years of experience delivering quality across 6 concurrent projects in PropertyTech and Fintech domains. Specializes in reducing defect leakage, building test automation suites (Selenium, Playwright, Appium), and applying ISTQB-aligned techniques (EP, BVA, Decision Table). Proven track record of cutting regression time by 67% and driving 30% reduction in production defects."}
                   </p>
                 </div>
 
@@ -165,7 +167,7 @@ export function CVPreviewModal({ job, onClose }: CVPreviewModalProps) {
                         </div>
                       ))
                     ) : (
-                      <div className="text-ink-muted">Manual Testing, API Testing, Playwright, Postman, SQL</div>
+                      <div className="text-ink-muted">Manual Testing, Selenium, Playwright, Postman, Grafana, ISTQB, SQL</div>
                     )}
                   </div>
                 </div>
@@ -178,15 +180,26 @@ export function CVPreviewModal({ job, onClose }: CVPreviewModalProps) {
                   <div className="space-y-3.5">
                     {(cv?.experiences || [
                       {
-                        company: "PT Solusi Teknologi Digital",
-                        role: "QA Engineer",
-                        location: "Yogyakarta",
-                        start_date: "2022-01",
+                        company: "PT. Royal D'Paragon Land",
+                        role: "Quality Assurance Engineer",
+                        location: "Depok, Yogyakarta · On-site",
+                        start_date: "2025-03",
+                        end_date: "2026-04",
+                        bullets: [
+                          "Managed QA across 6 concurrent projects (booking, payment, finance, reservation, self check-in, ops).",
+                          "Reduced defect leakage to production by ~30% and traced bugs using Grafana.",
+                          "Automated 70% of the regression suite using Selenium and applied ISTQB techniques (EP, BVA, Decision Table).",
+                        ],
+                      },
+                      {
+                        company: "Test IO Community",
+                        role: "Software Tester (Freelance)",
+                        location: "Remote",
+                        start_date: "2024-11",
                         end_date: "Present",
                         bullets: [
-                          "Designed and executed 250+ manual and automated test cases for fintech core banking and payment services.",
-                          "Implemented API automated tests using Postman and Newman, integrating into CI/CD pipeline.",
-                          "Conducted end-to-end browser regression automation using Playwright, reducing regression testing time by 40%.",
+                          "Executed manual and exploratory testing across diverse web applications within tight time constraints.",
+                          "Produced detailed defect reports with reproduction steps, severity, and screenshots minimizing report rejections.",
                         ],
                       },
                     ]).map((exp, idx) => (

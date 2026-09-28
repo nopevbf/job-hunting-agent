@@ -4,16 +4,20 @@
     "Quality Assurance",
     "Software Quality Assurance",
     "QA Automation",
-    "System Analyst",
+    "Test Automation Engineer",
+    "Software Tester",
+    "SDET",
     "IT Quality Assurance"
   ],
   "target_locations": [
     "Yogyakarta",
     "Remote",
+    "Jawa Tengah",
+    "Srumbung",
     "Daerah Istimewa Yogyakarta"
   ],
-  "minimum_salary": 8000000,
-  "max_experience_requirement": 5,
+  "minimum_salary": 6000000,
+  "max_experience_requirement": 4,
   "exclude_keywords": [
     "Sales",
     "Marketing",

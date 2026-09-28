@@ -17,8 +17,8 @@ export function ScreeningReviewModal({
   onClose,
   onConfirmApply,
 }: ScreeningReviewModalProps) {
-  const [expectedSalary, setExpectedSalary] = useState("9000000");
-  const [noticePeriod, setNoticePeriod] = useState("30");
+  const [expectedSalary, setExpectedSalary] = useState("8000000");
+  const [noticePeriod, setNoticePeriod] = useState("14");
   const [willingToRelocate, setWillingToRelocate] = useState("no");
 
   if (!isOpen || !job) return null;
@@ -68,12 +68,12 @@ export function ScreeningReviewModal({
               <span>Data Faktual (Otomatis dari Master Profile)</span>
             </div>
             <div className="grid grid-cols-2 gap-2 text-[11px] text-ink-base pt-1">
-              <div><span className="text-ink-muted">Nama:</span> Eka Pratama</div>
-              <div><span className="text-ink-muted">Email:</span> eka.pratama.qa@example.com</div>
-              <div><span className="text-ink-muted">No. HP:</span> +6281234567890</div>
-              <div><span className="text-ink-muted">Pengalaman:</span> 4 Tahun (QA)</div>
-              <div><span className="text-ink-muted">Domisili:</span> Yogyakarta</div>
-              <div><span className="text-ink-muted">Pendidikan:</span> S.Kom - UGM</div>
+              <div><span className="text-ink-muted">Nama:</span> Firman Aji Prasetyo</div>
+              <div><span className="text-ink-muted">Email:</span> firajitio@gmail.com</div>
+              <div><span className="text-ink-muted">No. HP:</span> +62-851-7337-0796</div>
+              <div><span className="text-ink-muted">Pengalaman:</span> 1.5+ Tahun (QA)</div>
+              <div><span className="text-ink-muted">Domisili:</span> Srumbung, Jateng / Yogyakarta</div>
+              <div><span className="text-ink-muted">Pendidikan:</span> S.Kom - Univ. Muhammadiyah Magelang</div>
             </div>
           </div>
 
