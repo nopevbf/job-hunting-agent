@@ -5,6 +5,7 @@ import {
   getDoc,
   setDoc,
   updateDoc,
+  deleteDoc,
   query,
   where,
   orderBy,
@@ -145,6 +146,46 @@ export class FirestoreJobService {
     if (!existing) return false;
     this.localStore.set(id, { ...existing, ...updates });
     return true;
+  }
+
+  async deleteJob(id: string): Promise<boolean> {
+    const db = getFirestoreDb();
+    if (!this.useMock && db) {
+      try {
+        const docRef = doc(db, "jobs", id);
+        await deleteDoc(docRef);
+      } catch (err) {
+        console.warn("Firestore deleteDoc failed, falling back to mock store:", err);
+      }
+    }
+
+    const existed = this.localStore.has(id);
+    if (existed) {
+      this.localStore.delete(id);
+      globalMockStore.delete(id);
+      return true;
+    }
+    return false;
+  }
+
+  async deleteAllJobs(): Promise<number> {
+    const count = this.localStore.size;
+    const db = getFirestoreDb();
+    if (!this.useMock && db) {
+      try {
+        const q = collection(db, "jobs");
+        const snapshot = await getDocs(q);
+        for (const d of snapshot.docs) {
+          await deleteDoc(d.ref);
+        }
+      } catch (err) {
+        console.warn("Firestore deleteAll failed, falling back to mock store:", err);
+      }
+    }
+
+    this.localStore.clear();
+    clearMockStore();
+    return count;
   }
 
   async getStats(): Promise<JobHuntingStats> {

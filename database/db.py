@@ -134,6 +134,20 @@ class DatabaseManager:
         self.conn.commit()
         return cursor.rowcount > 0
 
+    def delete_job(self, job_id: int) -> bool:
+        """Delete a job by id. Returns True if deleted, False if not found."""
+        cursor = self.conn.cursor()
+        cursor.execute("DELETE FROM jobs WHERE id = ?", (job_id,))
+        self.conn.commit()
+        return cursor.rowcount > 0
+
+    def clear_all_jobs(self) -> int:
+        """Delete all jobs from the database. Returns number of rows deleted."""
+        cursor = self.conn.cursor()
+        cursor.execute("DELETE FROM jobs")
+        self.conn.commit()
+        return cursor.rowcount
+
     def get_jobs_by_status(self, status: ApplicationStatus) -> List[JobPost]:
         cursor = self.conn.cursor()
         cursor.execute("SELECT * FROM jobs WHERE status = ? ORDER BY id DESC", (status.value,))

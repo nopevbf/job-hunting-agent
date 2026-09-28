@@ -10,10 +10,11 @@ import { CVPreviewModal } from "@/components/CVPreviewModal";
 import { JobImportModal } from "@/components/JobImportModal";
 import { ScreeningReviewModal } from "@/components/ScreeningReviewModal";
 import { DailyReportModal } from "@/components/DailyReportModal";
+import { DeleteConfirmModal } from "@/components/DeleteConfirmModal";
 import { ModeSelector } from "@/components/ModeSelector";
 import { JobPostData, JobHuntingStats } from "@/lib/types";
 import { AgentMode, evaluateModeDecision } from "@/lib/decision_engine";
-import { Search, Sparkles, Layers, Loader2, CheckCircle2 } from "lucide-react";
+import { Search, Sparkles, Layers, Loader2, CheckCircle2, Trash2 } from "lucide-react";
 
 export default function DashboardPage() {
   const [jobs, setJobs] = useState<JobPostData[]>([]);
@@ -34,6 +35,16 @@ export default function DashboardPage() {
   const [isImportOpen, setIsImportOpen] = useState(false);
   const [isReportOpen, setIsReportOpen] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [deleteModal, setDeleteModal] = useState<{
+    isOpen: boolean;
+    type: "SINGLE" | "ALL";
+    job?: JobPostData | null;
+  }>({
+    isOpen: false,
+    type: "SINGLE",
+    job: null,
+  });
+  const [isDeleting, setIsDeleting] = useState(false);
 
   // Command bar search state
   const [searchQuery, setSearchQuery] = useState("QA Engineer");
@@ -152,6 +163,54 @@ export default function DashboardPage() {
     }
   };
 
+  // Open Single Delete Modal
+  const handleDeleteJobClick = (job: JobPostData) => {
+    setDeleteModal({
+      isOpen: true,
+      type: "SINGLE",
+      job,
+    });
+  };
+
+  // Open Bulk Clear Modal
+  const handleClearAllClick = () => {
+    setDeleteModal({
+      isOpen: true,
+      type: "ALL",
+      job: null,
+    });
+  };
+
+  // Execute Deletion
+  const handleExecuteDelete = async () => {
+    setIsDeleting(true);
+    try {
+      if (deleteModal.type === "SINGLE" && deleteModal.job?.id) {
+        const res = await fetch(`/api/jobs/${deleteModal.job.id}`, {
+          method: "DELETE",
+        });
+        const json = await res.json();
+        if (json.success) {
+          setJobs((prev) => prev.filter((j) => j.id !== deleteModal.job!.id));
+        }
+      } else if (deleteModal.type === "ALL") {
+        const res = await fetch("/api/jobs", {
+          method: "DELETE",
+        });
+        const json = await res.json();
+        if (json.success) {
+          setJobs([]);
+        }
+      }
+      await fetchData();
+      setDeleteModal({ isOpen: false, type: "SINGLE", job: null });
+    } catch (err) {
+      console.error("Gagal menghapus lowongan:", err);
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
   // Filter logic
   const filteredJobs = jobs.filter((job) => {
     if (filterTab === "READY") return job.status === "READY_TO_APPLY" || job.status === "NEED_REVIEW";
@@ -252,48 +311,62 @@ export default function DashboardPage() {
               </p>
             </div>
 
-            {/* Filter Pills */}
-            <div className="flex items-center p-1 rounded-bento-sm bg-canvas-tint/70 border border-line-subtle">
-              <button
-                onClick={() => setFilterTab("ALL")}
-                className={`px-3 py-1.5 rounded-md text-xs font-semibold transition ${
-                  filterTab === "ALL"
-                    ? "bg-white text-ink-base shadow-sm"
-                    : "text-ink-muted hover:text-ink-base"
-                }`}
-              >
-                Semua ({jobs.length})
-              </button>
-              <button
-                onClick={() => setFilterTab("READY")}
-                className={`px-3 py-1.5 rounded-md text-xs font-semibold transition ${
-                  filterTab === "READY"
-                    ? "bg-white text-terracotta-accent shadow-sm"
-                    : "text-ink-muted hover:text-ink-base"
-                }`}
-              >
-                Siap Diapply ({stats.waiting_approval})
-              </button>
-              <button
-                onClick={() => setFilterTab("APPLIED")}
-                className={`px-3 py-1.5 rounded-md text-xs font-semibold transition ${
-                  filterTab === "APPLIED"
-                    ? "bg-white text-sage-deep shadow-sm"
-                    : "text-ink-muted hover:text-ink-base"
-                }`}
-              >
-                Diapply ({stats.applied})
-              </button>
-              <button
-                onClick={() => setFilterTab("SKIPPED")}
-                className={`px-3 py-1.5 rounded-md text-xs font-semibold transition ${
-                  filterTab === "SKIPPED"
-                    ? "bg-white text-ink-muted shadow-sm"
-                    : "text-ink-muted hover:text-ink-base"
-                }`}
-              >
-                Dilewati ({stats.skipped})
-              </button>
+            {/* Action Buttons & Filter Pills */}
+            <div className="flex items-center gap-3 flex-wrap">
+              {jobs.length > 0 && (
+                <button
+                  onClick={handleClearAllClick}
+                  className="px-3 py-1.5 rounded-bento-sm border border-red-200 bg-red-50/80 hover:bg-red-100 text-red-700 text-xs font-semibold flex items-center gap-1.5 transition shadow-sm"
+                  title="Hapus semua daftar lowongan"
+                >
+                  <Trash2 className="w-3.5 h-3.5" />
+                  <span>Bersihkan Semua</span>
+                </button>
+              )}
+
+              {/* Filter Pills */}
+              <div className="flex items-center p-1 rounded-bento-sm bg-canvas-tint/70 border border-line-subtle">
+                <button
+                  onClick={() => setFilterTab("ALL")}
+                  className={`px-3 py-1.5 rounded-md text-xs font-semibold transition ${
+                    filterTab === "ALL"
+                      ? "bg-white text-ink-base shadow-sm"
+                      : "text-ink-muted hover:text-ink-base"
+                  }`}
+                >
+                  Semua ({jobs.length})
+                </button>
+                <button
+                  onClick={() => setFilterTab("READY")}
+                  className={`px-3 py-1.5 rounded-md text-xs font-semibold transition ${
+                    filterTab === "READY"
+                      ? "bg-white text-terracotta-accent shadow-sm"
+                      : "text-ink-muted hover:text-ink-base"
+                  }`}
+                >
+                  Siap Diapply ({stats.waiting_approval})
+                </button>
+                <button
+                  onClick={() => setFilterTab("APPLIED")}
+                  className={`px-3 py-1.5 rounded-md text-xs font-semibold transition ${
+                    filterTab === "APPLIED"
+                      ? "bg-white text-sage-deep shadow-sm"
+                      : "text-ink-muted hover:text-ink-base"
+                  }`}
+                >
+                  Diapply ({stats.applied})
+                </button>
+                <button
+                  onClick={() => setFilterTab("SKIPPED")}
+                  className={`px-3 py-1.5 rounded-md text-xs font-semibold transition ${
+                    filterTab === "SKIPPED"
+                      ? "bg-white text-ink-muted shadow-sm"
+                      : "text-ink-muted hover:text-ink-base"
+                  }`}
+                >
+                  Dilewati ({stats.skipped})
+                </button>
+              </div>
             </div>
           </div>
 
@@ -307,6 +380,7 @@ export default function DashboardPage() {
                   onApply={handleApplyClick}
                   onSkip={handleSkip}
                   onViewCV={(j) => setSelectedCVJob(j)}
+                  onDelete={handleDeleteJobClick}
                 />
               ))
             ) : (
@@ -362,6 +436,17 @@ export default function DashboardPage() {
         onClose={() => setIsImportOpen(false)}
         onImportSuccess={() => fetchData()}
       />
+
+      <DeleteConfirmModal
+        isOpen={deleteModal.isOpen}
+        type={deleteModal.type}
+        job={deleteModal.job}
+        totalCount={jobs.length}
+        isLoading={isDeleting}
+        onConfirm={handleExecuteDelete}
+        onClose={() => !isDeleting && setDeleteModal({ isOpen: false, type: "SINGLE", job: null })}
+      />
     </div>
   );
 }
+

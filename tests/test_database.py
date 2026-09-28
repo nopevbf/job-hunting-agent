@@ -93,3 +93,31 @@ def test_context_manager_and_stats(sample_job_post):
         assert stats[ApplicationStatus.NEW.value] == 1
         assert stats[ApplicationStatus.APPLIED.value] == 0
 
+def test_delete_single_job(in_memory_db, sample_job_post):
+    """DEL-PY-001: Verify single job deletion from SQLite."""
+    job = JobPost(**sample_job_post)
+    job_id = in_memory_db.insert_job(job)
+    assert job_id is not None
+
+    # Deleting existing job
+    success = in_memory_db.delete_job(job_id)
+    assert success is True
+    assert in_memory_db.get_job_by_id(job_id) is None
+
+    # Deleting non-existent job
+    assert in_memory_db.delete_job(99999) is False
+
+def test_clear_all_jobs(in_memory_db, sample_job_post):
+    """DEL-PY-002: Verify bulk deletion from SQLite."""
+    job1 = JobPost(**sample_job_post)
+    job2 = JobPost(**dict(sample_job_post, position="QA Lead", job_url="https://example.com/2"))
+    in_memory_db.insert_job(job1)
+    in_memory_db.insert_job(job2)
+
+    deleted_count = in_memory_db.clear_all_jobs()
+    assert deleted_count == 2
+
+    # Should be empty
+    stats = in_memory_db.get_stats()
+    assert sum(stats.values()) == 0
+

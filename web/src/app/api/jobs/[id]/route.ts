@@ -39,3 +39,19 @@ export async function PATCH(
     return NextResponse.json({ success: false, error: (error as Error).message }, { status: 500 });
   }
 }
+
+export async function DELETE(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const { id } = await params;
+    const success = await firestoreJobService.deleteJob(id);
+    if (!success) {
+      return NextResponse.json({ success: false, error: "Job not found" }, { status: 404 });
+    }
+    return NextResponse.json({ success: true, message: `Job ${id} deleted successfully` });
+  } catch (error) {
+    return NextResponse.json({ success: false, error: (error as Error).message }, { status: 500 });
+  }
+}

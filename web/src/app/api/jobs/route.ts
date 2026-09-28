@@ -38,3 +38,20 @@ export async function POST(request: Request) {
     );
   }
 }
+
+export async function DELETE() {
+  try {
+    const deletedCount = await firestoreJobService.deleteAllJobs();
+    return NextResponse.json({
+      success: true,
+      message: `Berhasil menghapus ${deletedCount} lowongan`,
+      deletedCount,
+    });
+  } catch (error) {
+    return NextResponse.json(
+      { success: false, error: (error as Error).message },
+      { status: 500 }
+    );
+  }
+}
+

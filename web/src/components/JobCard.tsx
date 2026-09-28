@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Building2, MapPin, DollarSign, Check, AlertCircle, ArrowUpRight, FileText, CheckCircle2 } from "lucide-react";
+import { Building2, MapPin, DollarSign, Check, AlertCircle, ArrowUpRight, FileText, CheckCircle2, Trash2 } from "lucide-react";
 import { JobPostData, ApplicationStatus } from "@/lib/types";
 
 interface JobCardProps {
@@ -9,9 +9,10 @@ interface JobCardProps {
   onApply: (job: JobPostData) => void;
   onSkip: (job: JobPostData) => void;
   onViewCV: (job: JobPostData) => void;
+  onDelete: (job: JobPostData) => void;
 }
 
-export function JobCard({ job, onApply, onSkip, onViewCV }: JobCardProps) {
+export function JobCard({ job, onApply, onSkip, onViewCV, onDelete }: JobCardProps) {
   const score = job.match_score || 0;
   const isApplied = job.status === "APPLIED";
   const isSkipped = job.status === "SKIPPED";
@@ -145,6 +146,14 @@ export function JobCard({ job, onApply, onSkip, onViewCV }: JobCardProps) {
           >
             <ArrowUpRight className="w-4 h-4" />
           </a>
+
+          <button
+            onClick={() => onDelete(job)}
+            className="p-1.5 text-ink-muted hover:text-red-600 rounded-md hover:bg-red-50/80 transition"
+            title="Hapus Lowongan"
+          >
+            <Trash2 className="w-4 h-4" />
+          </button>
 
           {!isApplied && !isSkipped && (
             <>

@@ -90,4 +90,52 @@ describe("FirestoreJobService", () => {
     expect(stats.skipped).toBe(1);
     expect(stats.highest_match?.company).toBe("Traveloka");
   });
+
+  it("DEL-FN-001 & DEL-FN-002: should delete a single job by id and return false for non-existent id", async () => {
+    const id = await service.createJob(mockJob);
+    expect(id).toBeTruthy();
+
+    // Verify it exists
+    let jobs = await service.getJobs();
+    expect(jobs.length).toBe(1);
+
+    // Delete existing job
+    const success = await service.deleteJob(id!);
+    expect(success).toBe(true);
+
+    // Verify it is gone
+    jobs = await service.getJobs();
+    expect(jobs.length).toBe(0);
+
+    const retrieved = await service.getJobById(id!);
+    expect(retrieved).toBeNull();
+
+    // DEL-FN-002: Deleting non-existent id should return false
+    const failDelete = await service.deleteJob("non-existent-id-999");
+    expect(failDelete).toBe(false);
+  });
+
+  it("DEL-FN-003 & DEL-FN-004: should clear all jobs from database", async () => {
+    await service.createJob(mockJob);
+    await service.createJob({
+      ...mockJob,
+      company: "Company 2",
+      position: "QA Tester",
+      job_url: "https://example.com/job-2",
+    });
+
+    let jobs = await service.getJobs();
+    expect(jobs.length).toBe(2);
+
+    // DEL-FN-003: Delete all
+    const deletedCount = await service.deleteAllJobs();
+    expect(deletedCount).toBe(2);
+
+    jobs = await service.getJobs();
+    expect(jobs.length).toBe(0);
+
+    // DEL-FN-004: Delete all when already empty should return 0
+    const secondDelete = await service.deleteAllJobs();
+    expect(secondDelete).toBe(0);
+  });
 });
