@@ -20,25 +20,6 @@ export function clearMockStore() {
   globalMockStore.clear();
 }
 
-// Seed synced data if available from Python agent (no dummy simulation data)
-export function seedMockStoreIfNeeded() {
-  if (globalMockStore.size === 0) {
-    // Try loading synced_jobs.json if available from Python agent
-    try {
-      // eslint-disable-next-line @typescript-eslint/no-require-imports
-      const synced = require("./synced_jobs.json");
-      if (Array.isArray(synced) && synced.length > 0) {
-        synced.forEach((j: JobPostData) => {
-          const id = j.id ? String(j.id) : `job-${Date.now()}`;
-          globalMockStore.set(id, { ...j, id });
-        });
-      }
-    } catch {
-      // Clean state: no dummy simulation data seeded
-    }
-  }
-}
-
 export class FirestoreJobService {
   private useMock: boolean;
   private localStore: Map<string, JobPostData>;
@@ -47,9 +28,6 @@ export class FirestoreJobService {
     const db = getFirestoreDb();
     this.useMock = options?.useMockStore ?? (db === null);
     this.localStore = options?.useMockStore ? new Map() : globalMockStore;
-    if (this.useMock && !options?.useMockStore) {
-      seedMockStoreIfNeeded();
-    }
   }
 
   async getJobs(): Promise<JobPostData[]> {
