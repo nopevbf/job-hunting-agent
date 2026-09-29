@@ -662,14 +662,14 @@
       "degree": 15
     },
     {
-      "id": "agent_job_filter_jobfilter",
-      "label": "JobFilter",
+      "id": "agent_cv_builder_cvbuilder",
+      "label": "CVBuilder",
       "degree": 15
     }
   ],
   "surprises": [
     {
-      "source": "\u26a1 Fitur Utama",
+      "source": "⚡ Fitur Utama",
       "target": "JobPost",
       "source_files": [
         "README.md",
@@ -677,7 +677,7 @@
       ],
       "confidence": "INFERRED",
       "relation": "references",
-      "why": "inferred connection - not explicitly stated in source; crosses file types (code \u2194 doc); connects across different repos/directories; bridges separate communities; peripheral node `\u26a1 Fitur Utama` unexpectedly reaches hub `JobPost`"
+      "why": "inferred connection - not explicitly stated in source; crosses file types (code ↔ doc); connects across different repos/directories; bridges separate communities; peripheral node `⚡ Fitur Utama` unexpectedly reaches hub `JobPost`"
     },
     {
       "source": "BaseJobScraper",
@@ -724,8 +724,41 @@
       "why": "inferred connection - not explicitly stated in source; connects across different repos/directories; bridges separate communities"
     }
   ],
-  "tokens": {
-    "input": 0,
-    "output": 0
-  }
+  "questions": [
+    {
+      "type": "bridge_node",
+      "question": "Why does `JobPost` connect `JobPost` to `app.py`, `cv_builder.py`, `DatabaseManager`, `MatchResult`, `models.py`, `JobHuntingOrchestrator`, `test_job_filter.py`, `MicrosoftToDoSync`, `🎯 Job Hunting Agent — Personal AI Automation`, `JobMatcher`, `test_screening.py`, `.evaluate`?",
+      "why": "High betweenness centrality (0.243) - this node is a cross-community bridge."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `DatabaseManager` connect `DatabaseManager` to `models.py`, `JobHuntingOrchestrator`, `app.py`, `JobPost`?",
+      "why": "High betweenness centrality (0.042) - this node is a cross-community bridge."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `⚡ Fitur Utama` connect `🎯 Job Hunting Agent — Personal AI Automation` to `JobPost`?",
+      "why": "High betweenness centrality (0.037) - this node is a cross-community bridge."
+    },
+    {
+      "type": "verify_inferred",
+      "question": "Are the 16 inferred relationships involving `JobPost` (e.g. with `ApprovalConsole` and `CVBuilder`) actually correct?",
+      "why": "`JobPost` has 16 INFERRED edges - model-reasoned connections that need verification."
+    },
+    {
+      "type": "verify_inferred",
+      "question": "Are the 5 inferred relationships involving `DatabaseManager` (e.g. with `JobHuntingOrchestrator` and `ApplicationStatus`) actually correct?",
+      "why": "`DatabaseManager` has 5 INFERRED edges - model-reasoned connections that need verification."
+    },
+    {
+      "type": "verify_inferred",
+      "question": "Are the 11 inferred relationships involving `ApplicationStatus` (e.g. with `JobHuntingOrchestrator` and `cmd_pending()`) actually correct?",
+      "why": "`ApplicationStatus` has 11 INFERRED edges - model-reasoned connections that need verification."
+    },
+    {
+      "type": "verify_inferred",
+      "question": "Are the 12 inferred relationships involving `JobHuntingOrchestrator` (e.g. with `CVBuilder` and `TailoringIntensity`) actually correct?",
+      "why": "`JobHuntingOrchestrator` has 12 INFERRED edges - model-reasoned connections that need verification."
+    }
+  ]
 }

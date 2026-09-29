@@ -303,26 +303,13 @@
       "source_location": "L6"
     },
     {
-      "id": "web_src_lib_firestore_firestorejobservice",
-      "label": "firestoreJobService",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 17,
-      "community_name": "firestoreJobService",
-      "file_type": "code",
-      "norm_label": "firestorejobservice",
-      "source_file": "web/src/lib/firestore.ts",
-      "source_location": "L222"
-    },
-    {
       "id": "web_src_app_api_scout_route_rawrealjob",
       "label": "RawRealJob",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
-      "community": 18,
-      "community_name": "scout/route.ts",
+      "community": 16,
+      "community_name": "firestore.ts",
       "file_type": "code",
       "norm_label": "rawrealjob",
       "source_file": "web/src/app/api/scout/route.ts",
@@ -334,8 +321,8 @@
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
-      "community": 18,
-      "community_name": "scout/route.ts",
+      "community": 16,
+      "community_name": "firestore.ts",
       "file_type": "code",
       "norm_label": "scoutrequest",
       "source_file": "web/src/app/api/scout/route.ts",
@@ -347,12 +334,12 @@
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
-      "community": 21,
-      "community_name": "stream/route.ts",
+      "community": 16,
+      "community_name": "firestore.ts",
       "file_type": "code",
       "norm_label": "rawjob",
       "source_file": "web/src/app/api/scout/stream/route.ts",
-      "source_location": "L11"
+      "source_location": "L15"
     },
     {
       "id": "web_src_app_api_scout_stream_route_scoutlogevent",
@@ -360,12 +347,25 @@
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
-      "community": 21,
-      "community_name": "stream/route.ts",
+      "community": 16,
+      "community_name": "firestore.ts",
       "file_type": "code",
       "norm_label": "scoutlogevent",
       "source_file": "web/src/app/api/scout/stream/route.ts",
-      "source_location": "L3"
+      "source_location": "L6"
+    },
+    {
+      "id": "web_src_lib_firestore_firestorejobservice",
+      "label": "firestoreJobService",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 16,
+      "community_name": "firestore.ts",
+      "file_type": "code",
+      "norm_label": "firestorejobservice",
+      "source_file": "web/src/lib/firestore.ts",
+      "source_location": "L222"
     },
     {
       "id": "web_src_lib_types_tailoredcvcontent",
@@ -373,8 +373,8 @@
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
-      "community": 23,
-      "community_name": "analyze/route.ts",
+      "community": 16,
+      "community_name": "firestore.ts",
       "file_type": "code",
       "norm_label": "tailoredcvcontent",
       "source_file": "web/src/lib/types.ts",
@@ -1450,179 +1450,59 @@
       "source_location": "L18"
     },
     {
-      "id": "web_src_app_api_stats_route_get",
+      "id": "web_src_app_api_analyze_route_post",
+      "label": "POST()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 16,
+      "community_name": "firestore.ts",
+      "file_type": "code",
+      "norm_label": "post()",
+      "source_file": "web/src/app/api/analyze/route.ts",
+      "source_location": "L21"
+    },
+    {
+      "id": "web_src_app_api_jobs_id_route_delete",
+      "label": "DELETE()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 16,
+      "community_name": "firestore.ts",
+      "file_type": "code",
+      "norm_label": "delete()",
+      "source_file": "web/src/app/api/jobs/[id]/route.ts",
+      "source_location": "L43"
+    },
+    {
+      "id": "web_src_app_api_jobs_id_route_get",
       "label": "GET()",
       "_callable": true,
       "_origin": "ast",
       "community": 16,
-      "community_name": "next",
+      "community_name": "firestore.ts",
       "file_type": "code",
       "norm_label": "get()",
-      "source_file": "web/src/app/api/stats/route.ts",
-      "source_location": "L4"
+      "source_file": "web/src/app/api/jobs/[id]/route.ts",
+      "source_location": "L5"
     },
     {
-      "id": "web_src_app_layout_rootlayout",
-      "label": "RootLayout()",
+      "id": "web_src_app_api_jobs_id_route_patch",
+      "label": "PATCH()",
       "_callable": true,
       "_origin": "ast",
       "community": 16,
-      "community_name": "next",
+      "community_name": "firestore.ts",
       "file_type": "code",
-      "norm_label": "rootlayout()",
-      "source_file": "web/src/app/layout.tsx",
-      "source_location": "L24"
-    },
-    {
-      "id": "web_src_lib_firebase_getfirestoredb",
-      "label": "getFirestoreDb()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 17,
-      "community_name": "firestoreJobService",
-      "file_type": "code",
-      "norm_label": "getfirestoredb()",
-      "source_file": "web/src/lib/firebase.ts",
-      "source_location": "L15"
-    },
-    {
-      "id": "web_src_lib_firestore_firestorejobservice_constructor",
-      "label": ".constructor()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 17,
-      "community_name": "firestoreJobService",
-      "file_type": "code",
-      "norm_label": ".constructor()",
-      "source_file": "web/src/lib/firestore.ts",
-      "source_location": "L46"
-    },
-    {
-      "id": "web_src_lib_firestore_firestorejobservice_createjob",
-      "label": ".createJob()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 17,
-      "community_name": "firestoreJobService",
-      "file_type": "code",
-      "norm_label": ".createjob()",
-      "source_file": "web/src/lib/firestore.ts",
-      "source_location": "L88"
-    },
-    {
-      "id": "web_src_lib_firestore_firestorejobservice_deletejob",
-      "label": ".deleteJob()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 17,
-      "community_name": "firestoreJobService",
-      "file_type": "code",
-      "norm_label": ".deletejob()",
-      "source_file": "web/src/lib/firestore.ts",
-      "source_location": "L151"
-    },
-    {
-      "id": "web_src_lib_firestore_firestorejobservice_getjobbyid",
-      "label": ".getJobById()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 17,
-      "community_name": "firestoreJobService",
-      "file_type": "code",
-      "norm_label": ".getjobbyid()",
-      "source_file": "web/src/lib/firestore.ts",
-      "source_location": "L71"
-    },
-    {
-      "id": "web_src_lib_firestore_firestorejobservice_getjobs",
-      "label": ".getJobs()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 17,
-      "community_name": "firestoreJobService",
-      "file_type": "code",
-      "norm_label": ".getjobs()",
-      "source_file": "web/src/lib/firestore.ts",
-      "source_location": "L55"
-    },
-    {
-      "id": "web_src_lib_firestore_firestorejobservice_getstats",
-      "label": ".getStats()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 17,
-      "community_name": "firestoreJobService",
-      "file_type": "code",
-      "norm_label": ".getstats()",
-      "source_file": "web/src/lib/firestore.ts",
-      "source_location": "L191"
-    },
-    {
-      "id": "web_src_lib_firestore_firestorejobservice_updatejobstatus",
-      "label": ".updateJobStatus()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 17,
-      "community_name": "firestoreJobService",
-      "file_type": "code",
-      "norm_label": ".updatejobstatus()",
-      "source_file": "web/src/lib/firestore.ts",
-      "source_location": "L124"
-    },
-    {
-      "id": "web_src_lib_firestore_seedmockstoreifneeded",
-      "label": "seedMockStoreIfNeeded()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 17,
-      "community_name": "firestoreJobService",
-      "file_type": "code",
-      "norm_label": "seedmockstoreifneeded()",
-      "source_file": "web/src/lib/firestore.ts",
-      "source_location": "L24"
-    },
-    {
-      "id": "web_src_app_api_scout_route_fetchreallivejobs",
-      "label": "fetchRealLiveJobs()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 18,
-      "community_name": "scout/route.ts",
-      "file_type": "code",
-      "norm_label": "fetchreallivejobs()",
-      "source_file": "web/src/app/api/scout/route.ts",
-      "source_location": "L28"
-    },
-    {
-      "id": "web_src_app_api_scout_route_post",
-      "label": "POST()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 18,
-      "community_name": "scout/route.ts",
-      "file_type": "code",
-      "norm_label": "post()",
-      "source_file": "web/src/app/api/scout/route.ts",
-      "source_location": "L230"
-    },
-    {
-      "id": "web_src_lib_title_matcher_istitlerelevant",
-      "label": "isTitleRelevant()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 18,
-      "community_name": "scout/route.ts",
-      "file_type": "code",
-      "norm_label": "istitlerelevant()",
-      "source_file": "web/src/lib/title_matcher.ts",
-      "source_location": "L6"
+      "norm_label": "patch()",
+      "source_file": "web/src/app/api/jobs/[id]/route.ts",
+      "source_location": "L21"
     },
     {
       "id": "web_src_app_api_jobs_route_delete",
       "label": "DELETE()",
       "_callable": true,
       "_origin": "ast",
-      "community": 19,
+      "community": 16,
       "community_name": "firestore.ts",
       "file_type": "code",
       "norm_label": "delete()",
@@ -1634,7 +1514,7 @@
       "label": "GET()",
       "_callable": true,
       "_origin": "ast",
-      "community": 19,
+      "community": 16,
       "community_name": "firestore.ts",
       "file_type": "code",
       "norm_label": "get()",
@@ -1646,7 +1526,7 @@
       "label": "POST()",
       "_callable": true,
       "_origin": "ast",
-      "community": 19,
+      "community": 16,
       "community_name": "firestore.ts",
       "file_type": "code",
       "norm_label": "post()",
@@ -1654,76 +1534,244 @@
       "source_location": "L17"
     },
     {
-      "id": "web_src_lib_firestore_clearmockstore",
-      "label": "clearMockStore()",
+      "id": "web_src_app_api_scout_route_fetchreallivejobs",
+      "label": "fetchRealLiveJobs()",
       "_callable": true,
       "_origin": "ast",
-      "community": 20,
-      "community_name": "vitest",
+      "community": 16,
+      "community_name": "firestore.ts",
       "file_type": "code",
-      "norm_label": "clearmockstore()",
-      "source_file": "web/src/lib/firestore.ts",
-      "source_location": "L19"
+      "norm_label": "fetchreallivejobs()",
+      "source_file": "web/src/app/api/scout/route.ts",
+      "source_location": "L28"
     },
     {
-      "id": "web_src_lib_firestore_firestorejobservice_deletealljobs",
-      "label": ".deleteAllJobs()",
+      "id": "web_src_app_api_scout_route_post",
+      "label": "POST()",
       "_callable": true,
       "_origin": "ast",
-      "community": 20,
-      "community_name": "vitest",
+      "community": 16,
+      "community_name": "firestore.ts",
       "file_type": "code",
-      "norm_label": ".deletealljobs()",
-      "source_file": "web/src/lib/firestore.ts",
-      "source_location": "L171"
+      "norm_label": "post()",
+      "source_file": "web/src/app/api/scout/route.ts",
+      "source_location": "L230"
     },
     {
       "id": "web_src_app_api_scout_stream_route_fetchportal",
       "label": "fetchPortal()",
       "_callable": true,
       "_origin": "ast",
-      "community": 21,
-      "community_name": "stream/route.ts",
+      "community": 16,
+      "community_name": "firestore.ts",
       "file_type": "code",
       "norm_label": "fetchportal()",
       "source_file": "web/src/app/api/scout/stream/route.ts",
-      "source_location": "L29"
+      "source_location": "L33"
     },
     {
       "id": "web_src_app_api_scout_stream_route_get",
       "label": "GET()",
       "_callable": true,
       "_origin": "ast",
-      "community": 21,
-      "community_name": "stream/route.ts",
+      "community": 16,
+      "community_name": "firestore.ts",
       "file_type": "code",
       "norm_label": "get()",
       "source_file": "web/src/app/api/scout/stream/route.ts",
-      "source_location": "L56"
+      "source_location": "L60"
     },
     {
       "id": "web_src_app_api_scout_stream_route_sseevent",
       "label": "sseEvent()",
       "_callable": true,
       "_origin": "ast",
-      "community": 21,
-      "community_name": "stream/route.ts",
+      "community": 16,
+      "community_name": "firestore.ts",
       "file_type": "code",
       "norm_label": "sseevent()",
       "source_file": "web/src/app/api/scout/stream/route.ts",
-      "source_location": "L24"
+      "source_location": "L28"
     },
     {
       "id": "web_src_app_api_scout_stream_route_strip_html",
       "label": "STRIP_HTML()",
       "_callable": true,
       "_origin": "ast",
-      "community": 21,
-      "community_name": "stream/route.ts",
+      "community": 16,
+      "community_name": "firestore.ts",
       "file_type": "code",
       "norm_label": "strip_html()",
       "source_file": "web/src/app/api/scout/stream/route.ts",
-      "source_location": "L49"
+      "source_location": "L53"
+    },
+    {
+      "id": "web_src_app_api_stats_route_get",
+      "label": "GET()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 16,
+      "community_name": "firestore.ts",
+      "file_type": "code",
+      "norm_label": "get()",
+      "source_file": "web/src/app/api/stats/route.ts",
+      "source_location": "L4"
+    },
+    {
+      "id": "web_src_app_layout_rootlayout",
+      "label": "RootLayout()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 16,
+      "community_name": "firestore.ts",
+      "file_type": "code",
+      "norm_label": "rootlayout()",
+      "source_file": "web/src/app/layout.tsx",
+      "source_location": "L24"
+    },
+    {
+      "id": "web_src_lib_firebase_getfirestoredb",
+      "label": "getFirestoreDb()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 16,
+      "community_name": "firestore.ts",
+      "file_type": "code",
+      "norm_label": "getfirestoredb()",
+      "source_file": "web/src/lib/firebase.ts",
+      "source_location": "L15"
+    },
+    {
+      "id": "web_src_lib_firestore_clearmockstore",
+      "label": "clearMockStore()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 16,
+      "community_name": "firestore.ts",
+      "file_type": "code",
+      "norm_label": "clearmockstore()",
+      "source_file": "web/src/lib/firestore.ts",
+      "source_location": "L19"
+    },
+    {
+      "id": "web_src_lib_firestore_firestorejobservice_constructor",
+      "label": ".constructor()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 16,
+      "community_name": "firestore.ts",
+      "file_type": "code",
+      "norm_label": ".constructor()",
+      "source_file": "web/src/lib/firestore.ts",
+      "source_location": "L46"
+    },
+    {
+      "id": "web_src_lib_firestore_firestorejobservice_createjob",
+      "label": ".createJob()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 16,
+      "community_name": "firestore.ts",
+      "file_type": "code",
+      "norm_label": ".createjob()",
+      "source_file": "web/src/lib/firestore.ts",
+      "source_location": "L88"
+    },
+    {
+      "id": "web_src_lib_firestore_firestorejobservice_deletealljobs",
+      "label": ".deleteAllJobs()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 16,
+      "community_name": "firestore.ts",
+      "file_type": "code",
+      "norm_label": ".deletealljobs()",
+      "source_file": "web/src/lib/firestore.ts",
+      "source_location": "L171"
+    },
+    {
+      "id": "web_src_lib_firestore_firestorejobservice_deletejob",
+      "label": ".deleteJob()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 16,
+      "community_name": "firestore.ts",
+      "file_type": "code",
+      "norm_label": ".deletejob()",
+      "source_file": "web/src/lib/firestore.ts",
+      "source_location": "L151"
+    },
+    {
+      "id": "web_src_lib_firestore_firestorejobservice_getjobbyid",
+      "label": ".getJobById()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 16,
+      "community_name": "firestore.ts",
+      "file_type": "code",
+      "norm_label": ".getjobbyid()",
+      "source_file": "web/src/lib/firestore.ts",
+      "source_location": "L71"
+    },
+    {
+      "id": "web_src_lib_firestore_firestorejobservice_getjobs",
+      "label": ".getJobs()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 16,
+      "community_name": "firestore.ts",
+      "file_type": "code",
+      "norm_label": ".getjobs()",
+      "source_file": "web/src/lib/firestore.ts",
+      "source_location": "L55"
+    },
+    {
+      "id": "web_src_lib_firestore_firestorejobservice_getstats",
+      "label": ".getStats()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 16,
+      "community_name": "firestore.ts",
+      "file_type": "code",
+      "norm_label": ".getstats()",
+      "source_file": "web/src/lib/firestore.ts",
+      "source_location": "L191"
+    },
+    {
+      "id": "web_src_lib_firestore_firestorejobservice_updatejobstatus",
+      "label": ".updateJobStatus()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 16,
+      "community_name": "firestore.ts",
+      "file_type": "code",
+      "norm_label": ".updatejobstatus()",
+      "source_file": "web/src/lib/firestore.ts",
+      "source_location": "L124"
+    },
+    {
+      "id": "web_src_lib_firestore_seedmockstoreifneeded",
+      "label": "seedMockStoreIfNeeded()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 16,
+      "community_name": "firestore.ts",
+      "file_type": "code",
+      "norm_label": "seedmockstoreifneeded()",
+      "source_file": "web/src/lib/firestore.ts",
+      "source_location": "L24"
+    },
+    {
+      "id": "web_src_lib_title_matcher_istitlerelevant",
+      "label": "isTitleRelevant()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 16,
+      "community_name": "firestore.ts",
+      "file_type": "code",
+      "norm_label": "istitlerelevant()",
+      "source_file": "web/src/lib/title_matcher.ts",
+      "source_location": "L6"
     },
     {
       "id": "agent_job_filter_jobfilter_evaluate",
@@ -1760,54 +1808,6 @@
       "norm_label": ".is_role_relevant()",
       "source_file": "agent/job_filter.py",
       "source_location": "L25"
-    },
-    {
-      "id": "web_src_app_api_analyze_route_post",
-      "label": "POST()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 23,
-      "community_name": "analyze/route.ts",
-      "file_type": "code",
-      "norm_label": "post()",
-      "source_file": "web/src/app/api/analyze/route.ts",
-      "source_location": "L21"
-    },
-    {
-      "id": "web_src_app_api_jobs_id_route_delete",
-      "label": "DELETE()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 24,
-      "community_name": "[id]/route.ts",
-      "file_type": "code",
-      "norm_label": "delete()",
-      "source_file": "web/src/app/api/jobs/[id]/route.ts",
-      "source_location": "L43"
-    },
-    {
-      "id": "web_src_app_api_jobs_id_route_get",
-      "label": "GET()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 24,
-      "community_name": "[id]/route.ts",
-      "file_type": "code",
-      "norm_label": "get()",
-      "source_file": "web/src/app/api/jobs/[id]/route.ts",
-      "source_location": "L5"
-    },
-    {
-      "id": "web_src_app_api_jobs_id_route_patch",
-      "label": "PATCH()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 24,
-      "community_name": "[id]/route.ts",
-      "file_type": "code",
-      "norm_label": "patch()",
-      "source_file": "web/src/app/api/jobs/[id]/route.ts",
-      "source_location": "L21"
     },
     {
       "id": "agent_cv_builder_cvbuilder_build_tailored_content",
@@ -3817,7 +3817,7 @@
       "label": "next.config.ts",
       "_origin": "ast",
       "community": 16,
-      "community_name": "next",
+      "community_name": "firestore.ts",
       "file_type": "code",
       "norm_label": "next.config.ts",
       "source_file": "web/next.config.ts",
@@ -3828,18 +3828,84 @@
       "label": "nextConfig",
       "_origin": "ast",
       "community": 16,
-      "community_name": "next",
+      "community_name": "firestore.ts",
       "file_type": "code",
       "norm_label": "nextconfig",
       "source_file": "web/next.config.ts",
       "source_location": "L3"
     },
     {
+      "id": "web_src_app_api_analyze_route",
+      "label": "analyze/route.ts",
+      "_origin": "ast",
+      "community": 16,
+      "community_name": "firestore.ts",
+      "file_type": "code",
+      "norm_label": "analyze/route.ts",
+      "source_file": "web/src/app/api/analyze/route.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "web_src_app_api_analyze_route_user_profile",
+      "label": "USER_PROFILE",
+      "_origin": "ast",
+      "community": 16,
+      "community_name": "firestore.ts",
+      "file_type": "code",
+      "norm_label": "user_profile",
+      "source_file": "web/src/app/api/analyze/route.ts",
+      "source_location": "L6"
+    },
+    {
+      "id": "web_src_app_api_jobs_id_route",
+      "label": "[id]/route.ts",
+      "_origin": "ast",
+      "community": 16,
+      "community_name": "firestore.ts",
+      "file_type": "code",
+      "norm_label": "[id]/route.ts",
+      "source_file": "web/src/app/api/jobs/[id]/route.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "web_src_app_api_jobs_route",
+      "label": "jobs/route.ts",
+      "_origin": "ast",
+      "community": 16,
+      "community_name": "firestore.ts",
+      "file_type": "code",
+      "norm_label": "jobs/route.ts",
+      "source_file": "web/src/app/api/jobs/route.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "web_src_app_api_scout_route",
+      "label": "scout/route.ts",
+      "_origin": "ast",
+      "community": 16,
+      "community_name": "firestore.ts",
+      "file_type": "code",
+      "norm_label": "scout/route.ts",
+      "source_file": "web/src/app/api/scout/route.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "web_src_app_api_scout_stream_route",
+      "label": "stream/route.ts",
+      "_origin": "ast",
+      "community": 16,
+      "community_name": "firestore.ts",
+      "file_type": "code",
+      "norm_label": "stream/route.ts",
+      "source_file": "web/src/app/api/scout/stream/route.ts",
+      "source_location": "L1"
+    },
+    {
       "id": "web_src_app_api_stats_route",
       "label": "stats/route.ts",
       "_origin": "ast",
       "community": 16,
-      "community_name": "next",
+      "community_name": "firestore.ts",
       "file_type": "code",
       "norm_label": "stats/route.ts",
       "source_file": "web/src/app/api/stats/route.ts",
@@ -3850,7 +3916,7 @@
       "label": "layout.tsx",
       "_origin": "ast",
       "community": 16,
-      "community_name": "next",
+      "community_name": "firestore.ts",
       "file_type": "code",
       "norm_label": "layout.tsx",
       "source_file": "web/src/app/layout.tsx",
@@ -3861,7 +3927,7 @@
       "label": "manrope",
       "_origin": "ast",
       "community": 16,
-      "community_name": "next",
+      "community_name": "firestore.ts",
       "file_type": "code",
       "norm_label": "manrope",
       "source_file": "web/src/app/layout.tsx",
@@ -3872,7 +3938,7 @@
       "label": "metadata",
       "_origin": "ast",
       "community": 16,
-      "community_name": "next",
+      "community_name": "firestore.ts",
       "file_type": "code",
       "norm_label": "metadata",
       "source_file": "web/src/app/layout.tsx",
@@ -3883,91 +3949,17 @@
       "label": "plusJakarta",
       "_origin": "ast",
       "community": 16,
-      "community_name": "next",
+      "community_name": "firestore.ts",
       "file_type": "code",
       "norm_label": "plusjakarta",
       "source_file": "web/src/app/layout.tsx",
       "source_location": "L5"
     },
     {
-      "id": "ref_next",
-      "label": "next",
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "next",
-      "file_type": "concept",
-      "norm_label": "next",
-      "source_file": "web/package.json",
-      "source_location": "L16"
-    },
-    {
-      "id": "web_src_app_api_scout_route",
-      "label": "scout/route.ts",
-      "_origin": "ast",
-      "community": 18,
-      "community_name": "scout/route.ts",
-      "file_type": "code",
-      "norm_label": "scout/route.ts",
-      "source_file": "web/src/app/api/scout/route.ts",
-      "source_location": "L1"
-    },
-    {
-      "id": "web_src_lib_title_matcher",
-      "label": "title_matcher.ts",
-      "_origin": "ast",
-      "community": 18,
-      "community_name": "scout/route.ts",
-      "file_type": "code",
-      "norm_label": "title_matcher.ts",
-      "source_file": "web/src/lib/title_matcher.ts",
-      "source_location": "L1"
-    },
-    {
-      "id": "web_src_tests_scout_portals_expansion_test",
-      "label": "scout_portals_expansion.test.ts",
-      "_origin": "ast",
-      "community": 18,
-      "file_type": "code",
-      "norm_label": "scout_portals_expansion.test.ts",
-      "source_file": "web/src/tests/scout_portals_expansion.test.ts",
-      "source_location": "L1"
-    },
-    {
-      "id": "web_src_tests_scout_portals_expansion_test_fetchedurls",
-      "label": "fetchedUrls",
-      "_origin": "ast",
-      "community": 18,
-      "file_type": "code",
-      "norm_label": "fetchedurls",
-      "source_file": "web/src/tests/scout_portals_expansion.test.ts",
-      "source_location": "L20"
-    },
-    {
-      "id": "web_src_tests_scout_portals_expansion_test_mockfetch",
-      "label": "mockFetch",
-      "_origin": "ast",
-      "community": 18,
-      "file_type": "code",
-      "norm_label": "mockfetch",
-      "source_file": "web/src/tests/scout_portals_expansion.test.ts",
-      "source_location": "L21"
-    },
-    {
-      "id": "web_src_app_api_jobs_route",
-      "label": "jobs/route.ts",
-      "_origin": "ast",
-      "community": 19,
-      "community_name": "firestore.ts",
-      "file_type": "code",
-      "norm_label": "jobs/route.ts",
-      "source_file": "web/src/app/api/jobs/route.ts",
-      "source_location": "L1"
-    },
-    {
       "id": "web_src_lib_firebase",
       "label": "firebase.ts",
       "_origin": "ast",
-      "community": 19,
+      "community": 16,
       "community_name": "firestore.ts",
       "file_type": "code",
       "norm_label": "firebase.ts",
@@ -3978,7 +3970,7 @@
       "id": "web_src_lib_firebase_firebaseconfig",
       "label": "firebaseConfig",
       "_origin": "ast",
-      "community": 19,
+      "community": 16,
       "community_name": "firestore.ts",
       "file_type": "code",
       "norm_label": "firebaseconfig",
@@ -3989,7 +3981,7 @@
       "id": "web_src_lib_firestore",
       "label": "firestore.ts",
       "_origin": "ast",
-      "community": 19,
+      "community": 16,
       "community_name": "firestore.ts",
       "file_type": "code",
       "norm_label": "firestore.ts",
@@ -4000,7 +3992,7 @@
       "id": "web_src_lib_firestore_globalmockstore",
       "label": "globalMockStore",
       "_origin": "ast",
-      "community": 19,
+      "community": 16,
       "community_name": "firestore.ts",
       "file_type": "code",
       "norm_label": "globalmockstore",
@@ -4008,15 +4000,125 @@
       "source_location": "L17"
     },
     {
+      "id": "web_src_lib_title_matcher",
+      "label": "title_matcher.ts",
+      "_origin": "ast",
+      "community": 16,
+      "community_name": "firestore.ts",
+      "file_type": "code",
+      "norm_label": "title_matcher.ts",
+      "source_file": "web/src/lib/title_matcher.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "web_src_tests_firestore_test",
+      "label": "firestore.test.ts",
+      "_origin": "ast",
+      "community": 16,
+      "community_name": "firestore.ts",
+      "file_type": "code",
+      "norm_label": "firestore.test.ts",
+      "source_file": "web/src/tests/firestore.test.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "web_src_tests_scout_portals_expansion_test",
+      "label": "scout_portals_expansion.test.ts",
+      "_origin": "ast",
+      "community": 16,
+      "community_name": "firestore.ts",
+      "file_type": "code",
+      "norm_label": "scout_portals_expansion.test.ts",
+      "source_file": "web/src/tests/scout_portals_expansion.test.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "web_src_tests_scout_portals_expansion_test_fetchedurls",
+      "label": "fetchedUrls",
+      "_origin": "ast",
+      "community": 16,
+      "community_name": "firestore.ts",
+      "file_type": "code",
+      "norm_label": "fetchedurls",
+      "source_file": "web/src/tests/scout_portals_expansion.test.ts",
+      "source_location": "L20"
+    },
+    {
+      "id": "web_src_tests_scout_portals_expansion_test_mockfetch",
+      "label": "mockFetch",
+      "_origin": "ast",
+      "community": 16,
+      "community_name": "firestore.ts",
+      "file_type": "code",
+      "norm_label": "mockfetch",
+      "source_file": "web/src/tests/scout_portals_expansion.test.ts",
+      "source_location": "L21"
+    },
+    {
+      "id": "web_src_tests_scout_real_test",
+      "label": "scout_real.test.ts",
+      "_origin": "ast",
+      "community": 16,
+      "community_name": "firestore.ts",
+      "file_type": "code",
+      "norm_label": "scout_real.test.ts",
+      "source_file": "web/src/tests/scout_real.test.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "web_src_tests_scout_stream_test",
+      "label": "scout_stream.test.ts",
+      "_origin": "ast",
+      "community": 16,
+      "community_name": "firestore.ts",
+      "file_type": "code",
+      "norm_label": "scout_stream.test.ts",
+      "source_file": "web/src/tests/scout_stream.test.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "web_vitest_config",
+      "label": "vitest.config.ts",
+      "_origin": "ast",
+      "community": 16,
+      "community_name": "firestore.ts",
+      "file_type": "code",
+      "norm_label": "vitest.config.ts",
+      "source_file": "web/vitest.config.ts",
+      "source_location": "L1"
+    },
+    {
       "id": "ref_firebase",
       "label": "firebase",
       "_origin": "ast",
-      "community": 19,
+      "community": 16,
       "community_name": "firestore.ts",
       "file_type": "concept",
       "norm_label": "firebase",
       "source_file": "web/package.json",
       "source_location": "L14"
+    },
+    {
+      "id": "ref_next",
+      "label": "next",
+      "_origin": "ast",
+      "community": 16,
+      "community_name": "firestore.ts",
+      "file_type": "concept",
+      "norm_label": "next",
+      "source_file": "web/package.json",
+      "source_location": "L16"
+    },
+    {
+      "id": "ref_vitest",
+      "label": "vitest",
+      "_origin": "ast",
+      "community": 16,
+      "community_name": "firestore.ts",
+      "file_type": "concept",
+      "norm_label": "vitest",
+      "source_file": "web/package.json",
+      "source_location": "L32"
     },
     {
       "id": "web_package",
@@ -4514,72 +4616,6 @@
       "source_location": "L31"
     },
     {
-      "id": "web_src_tests_firestore_test",
-      "label": "firestore.test.ts",
-      "_origin": "ast",
-      "community": 20,
-      "community_name": "vitest",
-      "file_type": "code",
-      "norm_label": "firestore.test.ts",
-      "source_file": "web/src/tests/firestore.test.ts",
-      "source_location": "L1"
-    },
-    {
-      "id": "web_src_tests_scout_real_test",
-      "label": "scout_real.test.ts",
-      "_origin": "ast",
-      "community": 20,
-      "community_name": "vitest",
-      "file_type": "code",
-      "norm_label": "scout_real.test.ts",
-      "source_file": "web/src/tests/scout_real.test.ts",
-      "source_location": "L1"
-    },
-    {
-      "id": "web_vitest_config",
-      "label": "vitest.config.ts",
-      "_origin": "ast",
-      "community": 20,
-      "community_name": "vitest",
-      "file_type": "code",
-      "norm_label": "vitest.config.ts",
-      "source_file": "web/vitest.config.ts",
-      "source_location": "L1"
-    },
-    {
-      "id": "ref_vitest",
-      "label": "vitest",
-      "_origin": "ast",
-      "community": 20,
-      "community_name": "vitest",
-      "file_type": "concept",
-      "norm_label": "vitest",
-      "source_file": "web/package.json",
-      "source_location": "L32"
-    },
-    {
-      "id": "web_src_app_api_scout_stream_route",
-      "label": "stream/route.ts",
-      "_origin": "ast",
-      "community": 21,
-      "community_name": "stream/route.ts",
-      "file_type": "code",
-      "norm_label": "stream/route.ts",
-      "source_file": "web/src/app/api/scout/stream/route.ts",
-      "source_location": "L1"
-    },
-    {
-      "id": "web_src_tests_scout_stream_test",
-      "label": "scout_stream.test.ts",
-      "_origin": "ast",
-      "community": 21,
-      "community_name": "stream/route.ts",
-      "file_type": "code",
-      "norm_label": "scout_stream.test.ts",
-      "source_file": "web/src/tests/scout_stream.test.ts",
-      "source_location": "L1"
-    },
-    {
       "id": "agent_job_filter_rationale_26",
       "label": "Check if a job title is relevant to target roles or canonical synonyms.",
       "_origin": "ast",
@@ -4611,39 +4647,6 @@
       "norm_label": "evaluate if a job post meets filtering criteria. returns: (is_valid: bool,...",
       "source_file": "agent/job_filter.py",
       "source_location": "L82"
-    },
-    {
-      "id": "web_src_app_api_analyze_route",
-      "label": "analyze/route.ts",
-      "_origin": "ast",
-      "community": 23,
-      "community_name": "analyze/route.ts",
-      "file_type": "code",
-      "norm_label": "analyze/route.ts",
-      "source_file": "web/src/app/api/analyze/route.ts",
-      "source_location": "L1"
-    },
-    {
-      "id": "web_src_app_api_analyze_route_user_profile",
-      "label": "USER_PROFILE",
-      "_origin": "ast",
-      "community": 23,
-      "community_name": "analyze/route.ts",
-      "file_type": "code",
-      "norm_label": "user_profile",
-      "source_file": "web/src/app/api/analyze/route.ts",
-      "source_location": "L6"
-    },
-    {
-      "id": "web_src_app_api_jobs_id_route",
-      "label": "[id]/route.ts",
-      "_origin": "ast",
-      "community": 24,
-      "community_name": "[id]/route.ts",
-      "file_type": "code",
-      "norm_label": "[id]/route.ts",
-      "source_file": "web/src/app/api/jobs/[id]/route.ts",
-      "source_location": "L1"
     },
     {
       "id": "agent_init",
@@ -5747,35 +5750,11 @@
       "type": "external"
     },
     {
-      "id": "web_src_app_globals",
-      "label": "web_src_app_globals",
-      "_origin": "semantic",
-      "community": 16,
-      "community_name": "next",
-      "external": true,
-      "file_type": "concept",
-      "norm_label": "web_src_app_globals",
-      "source_file": "",
-      "type": "external"
-    },
-    {
-      "id": "web_src_lib_synced_jobs",
-      "label": "web_src_lib_synced_jobs",
-      "_origin": "semantic",
-      "community": 17,
-      "community_name": "firestoreJobService",
-      "external": true,
-      "file_type": "concept",
-      "norm_label": "web_src_lib_synced_jobs",
-      "source_file": "",
-      "type": "external"
-    },
-    {
       "id": "ref_fs",
       "label": "ref_fs",
       "_origin": "semantic",
-      "community": 20,
-      "community_name": "vitest",
+      "community": 16,
+      "community_name": "firestore.ts",
       "external": true,
       "file_type": "concept",
       "norm_label": "ref_fs",
@@ -5786,11 +5765,35 @@
       "id": "ref_path",
       "label": "ref_path",
       "_origin": "semantic",
-      "community": 20,
-      "community_name": "vitest",
+      "community": 16,
+      "community_name": "firestore.ts",
       "external": true,
       "file_type": "concept",
       "norm_label": "ref_path",
+      "source_file": "",
+      "type": "external"
+    },
+    {
+      "id": "web_src_app_globals",
+      "label": "web_src_app_globals",
+      "_origin": "semantic",
+      "community": 16,
+      "community_name": "firestore.ts",
+      "external": true,
+      "file_type": "concept",
+      "norm_label": "web_src_app_globals",
+      "source_file": "",
+      "type": "external"
+    },
+    {
+      "id": "web_src_lib_synced_jobs",
+      "label": "web_src_lib_synced_jobs",
+      "_origin": "semantic",
+      "community": 16,
+      "community_name": "firestore.ts",
+      "external": true,
+      "file_type": "concept",
+      "norm_label": "web_src_lib_synced_jobs",
       "source_file": "",
       "type": "external"
     },
@@ -7033,6 +7036,18 @@
       "weight": 1.0
     },
     {
+      "source": "web_src_app_api_scout_stream_route_get",
+      "target": "web_src_lib_title_matcher_istitlerelevant",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "web/src/app/api/scout/stream/route.ts",
+      "source_location": "L294",
+      "weight": 1.0
+    },
+    {
       "source": "web_src_app_page_dashboardpage",
       "target": "web_src_lib_decision_engine_evaluatemodedecision",
       "relation": "calls",
@@ -7041,7 +7056,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "web/src/app/page.tsx",
-      "source_location": "L117",
+      "source_location": "L126",
       "weight": 1.0
     },
     {
@@ -7053,7 +7068,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "web/src/app/page.tsx",
-      "source_location": "L251",
+      "source_location": "L259",
       "weight": 1.0
     },
     {
@@ -7065,7 +7080,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "web/src/app/page.tsx",
-      "source_location": "L294",
+      "source_location": "L302",
       "weight": 1.0
     },
     {
@@ -7077,7 +7092,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "web/src/app/page.tsx",
-      "source_location": "L353",
+      "source_location": "L361",
       "weight": 1.0
     },
     {
@@ -7089,7 +7104,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "web/src/app/page.tsx",
-      "source_location": "L360",
+      "source_location": "L368",
       "weight": 1.0
     },
     {
@@ -7101,7 +7116,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "web/src/app/page.tsx",
-      "source_location": "L369",
+      "source_location": "L377",
       "weight": 1.0
     },
     {
@@ -7113,7 +7128,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "web/src/app/page.tsx",
-      "source_location": "L449",
+      "source_location": "L457",
       "weight": 1.0
     },
     {
@@ -7125,7 +7140,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "web/src/app/page.tsx",
-      "source_location": "L488",
+      "source_location": "L496",
       "weight": 1.0
     },
     {
@@ -7137,7 +7152,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "web/src/app/page.tsx",
-      "source_location": "L493",
+      "source_location": "L501",
       "weight": 1.0
     },
     {
@@ -7149,7 +7164,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "web/src/app/page.tsx",
-      "source_location": "L500",
+      "source_location": "L508",
       "weight": 1.0
     },
     {
@@ -7161,7 +7176,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "web/src/app/page.tsx",
-      "source_location": "L506",
+      "source_location": "L514",
       "weight": 1.0
     },
     {
@@ -7173,7 +7188,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "web/src/app/page.tsx",
-      "source_location": "L512",
+      "source_location": "L520",
       "weight": 1.0
     },
     {
@@ -7510,6 +7525,18 @@
       "context": "decorator",
       "source_file": "tests/test_screening.py",
       "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "web_src_app_api_scout_stream_route_scoutlogevent",
+      "target": "web_src_lib_types_jobpostdata",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "field",
+      "source_file": "web/src/app/api/scout/stream/route.ts",
+      "source_location": "L12",
       "weight": 1.0
     },
     {
@@ -10035,6 +10062,54 @@
       "weight": 1.0
     },
     {
+      "source": "web_src_app_api_scout_stream_route",
+      "target": "web_src_lib_firestore_firestorejobservice",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "web/src/app/api/scout/stream/route.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "web_src_app_api_scout_stream_route",
+      "target": "web_src_lib_types_jobpostdata",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "web/src/app/api/scout/stream/route.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "web_src_app_api_scout_stream_route",
+      "target": "web_src_lib_types_tailoredcvcontent",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "web/src/app/api/scout/stream/route.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "web_src_app_api_scout_stream_route",
+      "target": "web_src_lib_title_matcher_istitlerelevant",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "web/src/app/api/scout/stream/route.ts",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
       "source": "web_src_app_api_stats_route",
       "target": "web_src_lib_firestore_firestorejobservice",
       "relation": "imports",
@@ -12157,6 +12232,42 @@
       "context": "import",
       "source_file": "web/src/app/api/scout/stream/route.ts",
       "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "web_src_app_api_scout_stream_route",
+      "target": "web_src_lib_firestore",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "web/src/app/api/scout/stream/route.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "web_src_app_api_scout_stream_route",
+      "target": "web_src_lib_types",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "web/src/app/api/scout/stream/route.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "web_src_app_api_scout_stream_route",
+      "target": "web_src_lib_title_matcher",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "web/src/app/api/scout/stream/route.ts",
+      "source_location": "L4",
       "weight": 1.0
     },
     {
@@ -15030,7 +15141,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "web/src/app/api/scout/stream/route.ts",
-      "source_location": "L11",
+      "source_location": "L15",
       "weight": 1.0
     },
     {
@@ -15041,7 +15152,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "web/src/app/api/scout/stream/route.ts",
-      "source_location": "L24",
+      "source_location": "L28",
       "weight": 1.0
     },
     {
@@ -15052,18 +15163,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "web/src/app/api/scout/stream/route.ts",
-      "source_location": "L29",
-      "weight": 1.0
-    },
-    {
-      "source": "web_src_app_api_scout_stream_route",
-      "target": "web_src_app_api_scout_stream_route_scoutlogevent",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "web/src/app/api/scout/stream/route.ts",
-      "source_location": "L3",
+      "source_location": "L33",
       "weight": 1.0
     },
     {
@@ -15074,7 +15174,18 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "web/src/app/api/scout/stream/route.ts",
-      "source_location": "L49",
+      "source_location": "L53",
+      "weight": 1.0
+    },
+    {
+      "source": "web_src_app_api_scout_stream_route",
+      "target": "web_src_app_api_scout_stream_route_scoutlogevent",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "web/src/app/api/scout/stream/route.ts",
+      "source_location": "L6",
       "weight": 1.0
     },
     {
@@ -15085,7 +15196,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "web/src/app/api/scout/stream/route.ts",
-      "source_location": "L56",
+      "source_location": "L60",
       "weight": 1.0
     },
     {
@@ -18260,5 +18371,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "bc9c1798e68e1c83ace44e6f882f06e757772ff5"
+  "built_at_commit": "a5e49cf4315e09b8e35214d0b1db151484077a6c"
 }
