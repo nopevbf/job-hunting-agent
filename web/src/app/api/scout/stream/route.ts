@@ -53,6 +53,73 @@ async function fetchPortal(
 const STRIP_HTML = (s: string) => (s || "").replace(/<[^>]*>?/gm, " ").trim();
 const UA = "PersonalJobAgent/1.0";
 
+/** Fetch real jobs from LinkedIn public guest API and parse HTML cards */
+export async function fetchLinkedInJobs(query: string, timeoutMs = 8000): Promise<RawJob[]> {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+  const jobs: RawJob[] = [];
+
+  try {
+    const url = `https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=${encodeURIComponent(query)}&location=Indonesia&start=0`;
+    const res = await fetch(url, {
+      signal: controller.signal,
+      headers: {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept-Language": "id-ID,id;q=0.9,en-US;q=0.8,en;q=0.7",
+      },
+    });
+    clearTimeout(timeoutId);
+
+    if (res.ok && typeof res.text === "function") {
+      const html = await res.text();
+      const cardRegex = /<div[^>]*class="[^"]*base-search-card[^"]*"[^>]*>([\s\S]*?)<\/li>/gi;
+      const titleRegex = /<h3[^>]*class="[^"]*base-search-card__title[^"]*"[^>]*>\s*([\s\S]*?)\s*<\/h3>/i;
+      const companyRegex = /<h4[^>]*class="[^"]*base-search-card__subtitle[^"]*"[^>]*>[\s\S]*?<a[^>]*>\s*([\s\S]*?)\s*<\/a>|<h4[^>]*class="[^"]*base-search-card__subtitle[^"]*"[^>]*>\s*([\s\S]*?)\s*<\/h4>/i;
+      const locationRegex = /<span[^>]*class="[^"]*job-search-card__location[^"]*"[^>]*>\s*([\s\S]*?)\s*<\/span>/i;
+      const linkRegex = /<a[^>]*class="[^"]*base-card__full-link[^"]*"[^>]*href="([^"]*)"/i;
+      const cleanHtml = (s: string) => s.replace(/<[^>]*>?/gm, "").trim();
+
+      let match;
+      while ((match = cardRegex.exec(html)) !== null && jobs.length < 10) {
+        const block = match[1];
+        const tMatch = titleRegex.exec(block);
+        const rawTitle = tMatch ? cleanHtml(tMatch[1]) : "";
+        if (!rawTitle) continue;
+
+        const cMatch = companyRegex.exec(block);
+        let rawComp = "Confidential";
+        if (cMatch) {
+          rawComp = cleanHtml(cMatch[1] || cMatch[2] || "") || "Confidential";
+        }
+
+        const locMatch = locationRegex.exec(block);
+        const rawLoc = locMatch ? cleanHtml(locMatch[1]) : "Indonesia";
+
+        const lMatch = linkRegex.exec(block);
+        const rawUrl = lMatch ? lMatch[1].split("?")[0].trim() : "";
+        if (!rawUrl) continue;
+
+        jobs.push({
+          source: "LinkedIn",
+          company: rawComp,
+          position: rawTitle,
+          location: rawLoc,
+          job_url: rawUrl,
+          description: `Lowongan ${rawTitle} di ${rawComp}, ${rawLoc}.`,
+          requirements: ["Manual Testing", "API Testing", "Playwright", "SQL", "Selenium"],
+        });
+      }
+    }
+  } catch (err) {
+    console.warn("Notice: LinkedIn live fetch unavailable:", err);
+  } finally {
+    clearTimeout(timeoutId);
+  }
+
+  return jobs;
+}
+
 /**
  * GET /api/scout/stream?query=QA+Engineer
  * Streams Server-Sent Events with live progress while scraping job portals.
@@ -120,7 +187,13 @@ export async function GET(request: NextRequest) {
       addJobs(kalibrrJobs);
       emit({ step: "kalibrr_done", message: `✅ Kalibrr: ${kalibrrJobs.length} lowongan ditemukan`, count: allJobs.length });
 
-      // --- Portal 2: Jobicy (Worldwide Remote) ---
+      // --- Portal 2: LinkedIn (Indonesia Guest API) ---
+      emit({ step: "linkedin", message: "💼 Mencari di LinkedIn (Indonesia)...", count: allJobs.length });
+      const linkedInJobs = await fetchLinkedInJobs(query);
+      addJobs(linkedInJobs);
+      emit({ step: "linkedin_done", message: `✅ LinkedIn: ${linkedInJobs.length} lowongan ditemukan`, count: allJobs.length });
+
+      // --- Portal 3: Jobicy (Worldwide Remote) ---
       emit({ step: "jobicy", message: "🌐 Mencari di Jobicy (Worldwide Remote)...", count: allJobs.length });
       const jobicyJobs = await fetchPortal(
         `https://jobicy.com/api/v2/remote-jobs?tag=${encodeURIComponent(query)}&count=10`,

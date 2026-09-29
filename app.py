@@ -32,6 +32,7 @@ from integrations.microsoft_todo import MicrosoftToDoSync
 from browser.glints import GlintsScraper
 from browser.jobstreet import JobStreetScraper
 from browser.kalibrr import KalibrrScraper
+from browser.linkedin import LinkedInScraper
 
 console = Console()
 logging.basicConfig(
@@ -83,6 +84,7 @@ def cmd_search(args):
     jobstreet_adapter = JobStreetScraper()
     kalibrr_adapter = KalibrrScraper()
     glints_adapter = GlintsScraper()
+    linkedin_adapter = LinkedInScraper()
 
     normalized_jobs = []
 
@@ -112,6 +114,15 @@ def cmd_search(args):
         console.print(f"[green]✓ Ditemukan {len(gl_jobs)} lowongan dari Glints[/green]")
     except Exception as e:
         console.print(f"[yellow]Peringatan scraper Glints:[/] {e}")
+
+    # 4. Scrape real jobs from LinkedIn Indonesia (Guest API)
+    try:
+        console.print(f"[dim]→ Mengambil lowongan '{query}' dari LinkedIn Indonesia...[/dim]")
+        li_jobs = linkedin_adapter.search_jobs(query=query, location="Indonesia", max_results=10)
+        normalized_jobs.extend(li_jobs)
+        console.print(f"[green]✓ Ditemukan {len(li_jobs)} lowongan dari LinkedIn[/green]")
+    except Exception as e:
+        console.print(f"[yellow]Peringatan scraper LinkedIn:[/] {e}")
 
     found_count = len(normalized_jobs)
     processed_count = 0

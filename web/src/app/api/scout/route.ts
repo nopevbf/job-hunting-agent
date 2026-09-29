@@ -67,7 +67,65 @@ async function fetchRealLiveJobs(query: string): Promise<RawRealJob[]> {
     console.warn("Notice: Kalibrr live fetch unavailable:", err);
   }
 
-  // 2. Fetch worldwide remote jobs from Jobicy API
+  // 2. Fetch live Indonesian jobs from LinkedIn guest API
+  try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+    const res = await fetch(`https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=${encodeURIComponent(query)}&location=Indonesia&start=0`, {
+      signal: controller.signal,
+      headers: {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept-Language": "id-ID,id;q=0.9,en-US;q=0.8,en;q=0.7",
+      },
+    });
+    clearTimeout(timeoutId);
+
+    if (res.ok && typeof res.text === "function") {
+      const html = await res.text();
+      const cardRegex = /<div[^>]*class="[^"]*base-search-card[^"]*"[^>]*>([\s\S]*?)<\/li>/gi;
+      const titleRegex = /<h3[^>]*class="[^"]*base-search-card__title[^"]*"[^>]*>\s*(.*?)\s*<\/h3>/i;
+      const companyRegex = /<h4[^>]*class="[^"]*base-search-card__subtitle[^"]*"[^>]*>[\s\S]*?<a[^>]*>\s*(.*?)\s*<\/a>|<h4[^>]*class="[^"]*base-search-card__subtitle[^"]*"[^>]*>\s*(.*?)\s*<\/h4>/i;
+      const locationRegex = /<span[^>]*class="[^"]*job-search-card__location[^"]*"[^>]*>\s*([\s\S]*?)\s*<\/span>/i;
+      const linkRegex = /<a[^>]*class="[^"]*base-card__full-link[^"]*"[^>]*href="([^"]*)"/i;
+      const cleanHtml = (s: string) => s.replace(/<[^>]*>?/gm, "").trim();
+
+      let match;
+      while ((match = cardRegex.exec(html)) !== null && realJobs.length < 15) {
+        const block = match[1];
+        const tMatch = titleRegex.exec(block);
+        const rawTitle = tMatch ? cleanHtml(tMatch[1]) : "";
+        if (!rawTitle) continue;
+
+        const cMatch = companyRegex.exec(block);
+        let rawComp = "Confidential";
+        if (cMatch) {
+          rawComp = cleanHtml(cMatch[1] || cMatch[2] || "") || "Confidential";
+        }
+
+        const locMatch = locationRegex.exec(block);
+        const rawLoc = locMatch ? cleanHtml(locMatch[1]) : "Indonesia";
+
+        const lMatch = linkRegex.exec(block);
+        const rawUrl = lMatch ? lMatch[1].split("?")[0].trim() : "";
+        if (!rawUrl) continue;
+
+        realJobs.push({
+          source: "LinkedIn",
+          company: rawComp,
+          position: rawTitle,
+          location: rawLoc,
+          job_url: rawUrl,
+          description: `Lowongan ${rawTitle} di ${rawComp}, ${rawLoc}.`,
+          requirements: ["Manual Testing", "API Testing", "Playwright", "SQL", "Selenium"],
+        });
+      }
+    }
+  } catch (err) {
+    console.warn("Notice: LinkedIn live fetch unavailable:", err);
+  }
+
+  // 3. Fetch worldwide remote jobs from Jobicy API
   try {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), timeoutMs);

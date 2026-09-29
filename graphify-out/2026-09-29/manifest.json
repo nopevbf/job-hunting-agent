@@ -478,5 +478,17 @@
     "seen": 1790639348.8252957,
     "ast_hash": "1313c26f041c76a8ce74274bec9634ec",
     "semantic_hash": ""
+  },
+  "api/index.py": {
+    "mtime": 1790645086.8770616,
+    "seen": 1790645159.5254436,
+    "ast_hash": "da3b8f630d35ba29f7fcdc2199578a5f",
+    "semantic_hash": ""
+  },
+  "vercel.json": {
+    "mtime": 1790645091.8162372,
+    "seen": 1790645159.5254853,
+    "ast_hash": "40cae8d47385cdac4369180493653eae",
+    "semantic_hash": ""
   }
 }
