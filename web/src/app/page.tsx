@@ -98,6 +98,7 @@ export default function DashboardPage() {
           count?: number;
           total?: number;
           qualified?: number;
+          jobs?: JobPostData[];
         };
 
         // Add log line (keep max 30)
@@ -107,24 +108,31 @@ export default function DashboardPage() {
           es.close();
           setIsScouting(false);
           setScoutMessage(event.message);
+
+          if (Array.isArray(event.jobs) && event.jobs.length > 0) {
+            setJobs((prev) => {
+              const existingUrls = new Set(prev.map((j) => j.job_url));
+              const newUnique = event.jobs!.filter((j) => !existingUrls.has(j.job_url));
+              return [...newUnique, ...prev];
+            });
+          }
+
           await fetchData();
+
           // If in Auto-Apply mode, trigger auto application for high matches
           if (mode === "AUTO") {
-            const res = await fetch("/api/jobs");
-            const json = await res.json();
-            if (json.success) {
-              for (const job of json.data) {
-                const decision = evaluateModeDecision({ mode: "AUTO", job });
-                if (decision.action === "AUTO_APPLY") {
-                  await fetch(`/api/jobs/${job.id}`, {
-                    method: "PATCH",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ status: "APPLIED" }),
-                  });
-                }
+            const jobsToApply = event.jobs && event.jobs.length > 0 ? event.jobs : [];
+            for (const newJob of jobsToApply) {
+              const decision = evaluateModeDecision({ mode: "AUTO", job: newJob });
+              if (decision.action === "AUTO_APPLY" && newJob.id) {
+                await fetch(`/api/jobs/${newJob.id}`, {
+                  method: "PATCH",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ status: "APPLIED" }),
+                });
               }
-              await fetchData();
             }
+            await fetchData();
           }
           setTimeout(() => setScoutMessage(""), 8000);
         }

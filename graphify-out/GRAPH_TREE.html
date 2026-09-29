@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>/ — graphify tree viewer</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f9f9f9;
+      color: #333;
+    }
+    h1 {
+      margin: 20px 0 0 24px;
+      font-size: 2.2rem;
+      font-weight: bold;
+      color: #1e3a56;
+    }
+    .controls {
+      margin: 20px 0 15px 24px;
+    }
+    button {
+      margin-right: 10px;
+      padding: 8px 18px;
+      background: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: background 0.2s ease-in-out;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    button:active {
+      background: #004085;
+    }
+    #tree-container {
+      width: calc(100vw - 48px); /* Adjust for body margin/padding */
+      height: 85vh;
+      overflow: auto;
+      border-radius: 8px;
+      background: #fff;
+      margin-left: 24px;
+      margin-right: 24px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      border: 1px solid #ddd;
+    }
+    svg {
+      background: #fff;
+      border-radius: 8px;
+      display: block; /* Important for D3 */
+    }
+    .node circle {
+      stroke-width: 2.5px;
+    }
+    .node text { /* Base style for the <text> container */
+      font: 13px 'Segoe UI', sans-serif;
+      paint-order: stroke fill; /* Ensures text is readable over lines */
+      stroke: #fff; /* White halo */
+      stroke-width: 3px; /* Halo thickness */
+      stroke-linejoin: round;
+      stroke-opacity: 0.85; /* Halo opacity */
+    }
+    .link {
+      fill: none;
+      stroke-opacity: 0.7;
+      stroke-width: 2px;
+    }
+  </style>
+</head>
+<body>
+  <h1>/ — Knowledge Graph</h1>
+  <div class="controls">
+    <button onclick="expandAll()">Expand All</button>
+    <button onclick="collapseAll()">Collapse All</button>
+    <button onclick="resetView()">Reset View</button>
+  </div>
+  <div id="tree-container">
+    <svg id="tree-svg" width="6000" height="8000"></svg>
+  </div>
+
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script>
+    const initialJsonData = {"name":"/","total_count":392,"children":[{"name":".agents","total_count":4,"children":[{"name":"rules","total_count":2,"children":[{"name":"graphify.md","total_count":2,"children":[{"name":"graphify","total_count":1,"children":[]},{"name":"graphify.md","total_count":1,"children":[]}]}]},{"name":"skills","total_count":2,"children":[{"name":"graphify","total_count":2,"children":[{"name":"SKILL.md","total_count":2,"children":[{"name":"Graphify","total_count":1,"children":[]},{"name":"SKILL.md","total_count":1,"children":[]}]}]}]}]},{"name":"agent","total_count":50,"children":[{"name":"__init__.py","total_count":1,"children":[{"name":"Job Hunting Agent Package","total_count":1,"children":[]}]},{"name":"approval.py","total_count":8,"children":[{"name":".__init__()","total_count":1,"children":[]},{"name":".format_card()","total_count":1,"children":[]},{"name":".render_card()","total_count":1,"children":[]},{"name":".render_daily_report()","total_count":1,"children":[]},{"name":"ApprovalConsole","total_count":1,"children":[]},{"name":"Formats textual representation of approval card as specified in Blueprint\u2026","total_count":1,"children":[]},{"name":"Render beautiful Rich terminal panel.","total_count":1,"children":[]},{"name":"Render Blueprint section 28 Daily Job Hunting Report table.","total_count":1,"children":[]}]},{"name":"cv_builder.py","total_count":11,"children":[{"name":".__init__()","total_count":1,"children":[]},{"name":".build_tailored_content()","total_count":1,"children":[]},{"name":".convert_to_pdf()","total_count":1,"children":[]},{"name":".generate_documents()","total_count":1,"children":[]},{"name":"add_section_heading()","total_count":1,"children":[]},{"name":"Attempts to convert DOCX to PDF using LibreOffice or Word COM if available.\u2026","total_count":1,"children":[]},{"name":"bullet_score()","total_count":1,"children":[]},{"name":"CVBuilder","total_count":1,"children":[]},{"name":"Generate ATS-friendly single column DOCX and save JD Snapshot JSON. Returns:\u2026","total_count":1,"children":[]},{"name":"TailoringIntensity","total_count":1,"children":[]},{"name":"Truth-Preserving CV Tailoring: - NEVER inject skills or experiences not present\u2026","total_count":1,"children":[]}]},{"name":"job_filter.py","total_count":8,"children":[{"name":".__init__()","total_count":1,"children":[]},{"name":"._is_location_accepted()","total_count":1,"children":[]},{"name":".evaluate()","total_count":1,"children":[]},{"name":".is_role_relevant()","total_count":1,"children":[]},{"name":"Check if a job title is relevant to target roles or canonical synonyms.","total_count":1,"children":[]},{"name":"Determine if job location is acceptable. - If Indonesia-wide mode: accept all\u2026","total_count":1,"children":[]},{"name":"Evaluate if a job post meets filtering criteria. Returns: (is_valid: bool,\u2026","total_count":1,"children":[]},{"name":"JobFilter","total_count":1,"children":[]}]},{"name":"job_matcher.py","total_count":8,"children":[{"name":".__init__()","total_count":1,"children":[]},{"name":"._extract_all_user_skills()","total_count":1,"children":[]},{"name":".calculate_match()","total_count":1,"children":[]},{"name":".classify_score()","total_count":1,"children":[]},{"name":"Calculate weighted match score and gap analysis. Weights: - Skills: 35% -\u2026","total_count":1,"children":[]},{"name":"JobMatcher","total_count":1,"children":[]},{"name":"MatchClassification","total_count":1,"children":[]},{"name":"MatchResult","total_count":1,"children":[]}]},{"name":"orchestrator.py","total_count":7,"children":[{"name":".__init__()","total_count":1,"children":[]},{"name":".apply_job()","total_count":1,"children":[]},{"name":".process_single_job()","total_count":1,"children":[]},{"name":".skip_job()","total_count":1,"children":[]},{"name":"End-to-End single job pipeline: 1. Duplicate Check 2. Filter Evaluation 3.\u2026","total_count":1,"children":[]},{"name":"JobHuntingOrchestrator","total_count":1,"children":[]},{"name":"User approves applying to job.","total_count":1,"children":[]}]},{"name":"screening.py","total_count":7,"children":[{"name":".__init__()","total_count":1,"children":[]},{"name":".evaluate_application_action()","total_count":1,"children":[]},{"name":".resolve_question()","total_count":1,"children":[]},{"name":"DecisionAction","total_count":1,"children":[]},{"name":"ISTQB Decision Table evaluation: - Check unresolved questions -> NEED_REVIEW -\u2026","total_count":1,"children":[]},{"name":"Resolve factual or saved screening questions without guessing. Returns the\u2026","total_count":1,"children":[]},{"name":"ScreeningEvaluator","total_count":1,"children":[]}]}]},{"name":"ai","total_count":10,"children":[{"name":"client.py","total_count":7,"children":[{"name":".__init__()","total_count":1,"children":[]},{"name":"._fallback_extract()","total_count":1,"children":[]},{"name":".extract_job_details()","total_count":1,"children":[]},{"name":".is_configured()","total_count":1,"children":[]},{"name":"Deterministic offline regex extractor.","total_count":1,"children":[]},{"name":"Extract structured details from JD using Gemini API if configured, or\u2026","total_count":1,"children":[]},{"name":"GeminiAIClient","total_count":1,"children":[]}]},{"name":"schemas.py","total_count":1,"children":[{"name":"JobExtractionSchema","total_count":1,"children":[]}]},{"name":"__init__.py","total_count":1,"children":[]},{"name":"prompts.py","total_count":1,"children":[]}]},{"name":"app.py","total_count":7,"children":[{"name":"cmd_pending()","total_count":1,"children":[]},{"name":"cmd_report()","total_count":1,"children":[]},{"name":"cmd_search()","total_count":1,"children":[]},{"name":"get_orchestrator()","total_count":1,"children":[]},{"name":"load_json_file()","total_count":1,"children":[]},{"name":"main()","total_count":1,"children":[]},{"name":"Review jobs waiting for user approval.","total_count":1,"children":[]}]},{"name":"browser","total_count":26,"children":[{"name":"base.py","total_count":7,"children":[{"name":".__init__()","total_count":1,"children":[]},{"name":".extract_experience()","total_count":1,"children":[]},{"name":".extract_skills_from_text()","total_count":1,"children":[]},{"name":".normalize_job()","total_count":1,"children":[]},{"name":".parse_salary()","total_count":1,"children":[]},{"name":"BaseJobScraper","total_count":1,"children":[]},{"name":"Extract min and max salary in IDR numbers from text. e.g. 'IDR 12.000.000 -\u2026","total_count":1,"children":[]}]},{"name":"glints.py","total_count":6,"children":[{"name":".__init__()","total_count":1,"children":[]},{"name":".normalize_job()","total_count":1,"children":[]},{"name":".scrape()","total_count":1,"children":[]},{"name":"GlintsScraper","total_count":1,"children":[]},{"name":"Normalize raw Glints job card into unified JobPost model.","total_count":1,"children":[]},{"name":"Scrape live jobs directly from Glints Indonesia using Playwright Chrome.","total_count":1,"children":[]}]},{"name":"jobstreet.py","total_count":6,"children":[{"name":".__init__()","total_count":1,"children":[]},{"name":".normalize_job()","total_count":1,"children":[]},{"name":".scrape()","total_count":1,"children":[]},{"name":"JobStreetScraper","total_count":1,"children":[]},{"name":"Normalize raw JobStreet job card into unified JobPost model.","total_count":1,"children":[]},{"name":"Scrape live jobs directly from JobStreet Indonesia using Playwright Chrome.","total_count":1,"children":[]}]},{"name":"kalibrr.py","total_count":6,"children":[{"name":".__init__()","total_count":1,"children":[]},{"name":".normalize_job()","total_count":1,"children":[]},{"name":".scrape()","total_count":1,"children":[]},{"name":"KalibrrScraper","total_count":1,"children":[]},{"name":"Normalize raw Kalibrr JSON item into unified JobPost model.","total_count":1,"children":[]},{"name":"Scrape live jobs directly from Kalibrr Indonesia official REST API.","total_count":1,"children":[]}]},{"name":"__init__.py","total_count":1,"children":[]}]},{"name":"database","total_count":27,"children":[{"name":"db.py","total_count":22,"children":[{"name":".__enter__()","total_count":1,"children":[]},{"name":".__exit__()","total_count":1,"children":[]},{"name":".__init__()","total_count":1,"children":[]},{"name":"._row_to_model()","total_count":1,"children":[]},{"name":".clear_all_jobs()","total_count":1,"children":[]},{"name":".close()","total_count":1,"children":[]},{"name":".delete_job()","total_count":1,"children":[]},{"name":".get_job_by_id()","total_count":1,"children":[]},{"name":".get_jobs_by_status()","total_count":1,"children":[]},{"name":".get_stats()","total_count":1,"children":[]},{"name":".init_db()","total_count":1,"children":[]},{"name":".insert_job()","total_count":1,"children":[]},{"name":".is_duplicate()","total_count":1,"children":[]},{"name":".update_status()","total_count":1,"children":[]},{"name":"Check if job already exists by company + position + job_url.","total_count":1,"children":[]},{"name":"DatabaseManager","total_count":1,"children":[]},{"name":"Delete a job by id. Returns True if deleted, False if not found.","total_count":1,"children":[]},{"name":"Delete all jobs from the database. Returns number of rows deleted.","total_count":1,"children":[]},{"name":"Get summary count of jobs by status.","total_count":1,"children":[]},{"name":"Initialize tables and indexes with duplicate protection.","total_count":1,"children":[]},{"name":"Insert new job post. Returns job id, or None if duplicate.","total_count":1,"children":[]},{"name":"Update application status and metadata.","total_count":1,"children":[]}]},{"name":"firestore_sync.py","total_count":2,"children":[{"name":"sync_sqlite_to_firestore()","total_count":1,"children":[]},{"name":"Syncs jobs from local SQLite database into Firebase Firestore. Can be used by\u2026","total_count":1,"children":[]}]},{"name":"models.py","total_count":2,"children":[{"name":"ApplicationStatus","total_count":1,"children":[]},{"name":"JobPost","total_count":1,"children":[]}]},{"name":"__init__.py","total_count":1,"children":[]}]},{"name":"integrations","total_count":9,"children":[{"name":"microsoft_todo.py","total_count":8,"children":[{"name":".__init__()","total_count":1,"children":[]},{"name":"._get_access_token()","total_count":1,"children":[]},{"name":"._get_or_create_list_id()","total_count":1,"children":[]},{"name":".create_or_update_task()","total_count":1,"children":[]},{"name":".format_body()","total_count":1,"children":[]},{"name":".format_title()","total_count":1,"children":[]},{"name":".is_configured()","total_count":1,"children":[]},{"name":"MicrosoftToDoSync","total_count":1,"children":[]}]},{"name":"__init__.py","total_count":1,"children":[]}]},{"name":"README.md","total_count":17,"children":[{"name":"1. Menjalankan Pencarian Mode Scout (Tanpa Apply)","total_count":1,"children":[]},{"name":"1. Prasyarat","total_count":1,"children":[]},{"name":"2. Menjalankan Pencarian Mode Assisted Apply (Default)","total_count":1,"children":[]},{"name":"2. Setup Virtual Environment","total_count":1,"children":[]},{"name":"3. Konfigurasi Environment (`.env`)","total_count":1,"children":[]},{"name":"3. Meninjau & Menyetujui Lowongan yang Menunggu Approval","total_count":1,"children":[]},{"name":"4. Melihat Laporan Harian (Daily Report)","total_count":1,"children":[]},{"name":"Deploy ke Vercel:","total_count":1,"children":[]},{"name":"Menjalankan Web Dashboard Lokal:","total_count":1,"children":[]},{"name":"README.md","total_count":1,"children":[]},{"name":"\u26a1 Fitur Utama","total_count":1,"children":[]},{"name":"\ud83c\udf10 Web Dashboard (Next.js & Vercel)","total_count":1,"children":[]},{"name":"\ud83c\udfaf Job Hunting Agent \u2014 Personal AI Automation","total_count":1,"children":[]},{"name":"\ud83c\udfd7\ufe0f Struktur Proyek","total_count":1,"children":[]},{"name":"\ud83d\udcbb Penggunaan CLI","total_count":1,"children":[]},{"name":"\ud83d\ude80 Panduan Memulai","total_count":1,"children":[]},{"name":"\ud83e\uddea Pengujian (SQA ISTQB & TDD)","total_count":1,"children":[]}]},{"name":"tests","total_count":93,"children":[{"name":"conftest.py","total_count":3,"children":[{"name":"sample_job_post()","total_count":1,"children":[]},{"name":"sample_preferences_data()","total_count":1,"children":[]},{"name":"sample_profile_data()","total_count":1,"children":[]}]},{"name":"test_ai_client.py","total_count":5,"children":[{"name":"ai_client()","total_count":1,"children":[]},{"name":"Test successful Gemini extraction with mock JSON response.","total_count":1,"children":[]},{"name":"test_gemini_api_success_extraction()","total_count":1,"children":[]},{"name":"test_offline_fallback_extraction()","total_count":1,"children":[]},{"name":"Verify that when API key is missing or offline, client extracts fallback data\u2026","total_count":1,"children":[]}]},{"name":"test_approval.py","total_count":2,"children":[{"name":"test_approval_card_formatting()","total_count":1,"children":[]},{"name":"Verify that approval console formats a detailed job review card.","total_count":1,"children":[]}]},{"name":"test_browser_scrapers.py","total_count":8,"children":[{"name":"Ensure both scrapers implement the real scrape() method.","total_count":1,"children":[]},{"name":"test_app_does_not_contain_hardcoded_sample_feeds()","total_count":1,"children":[]},{"name":"test_glints_scraper_parse_card()","total_count":1,"children":[]},{"name":"test_jobstreet_scraper_parse_card()","total_count":1,"children":[]},{"name":"test_scrapers_expose_real_scrape_interface()","total_count":1,"children":[]},{"name":"Verify parsing and normalization of Glints raw job card data.","total_count":1,"children":[]},{"name":"Verify parsing and normalization of JobStreet raw job card data.","total_count":1,"children":[]},{"name":"Verify that app.py does not contain hardcoded dummy sample feeds.","total_count":1,"children":[]}]},{"name":"test_cv_builder.py","total_count":7,"children":[{"name":"CRITICAL SQA / CV Rule: Ensure that requirements in JD NOT in Master Profile\u2026","total_count":1,"children":[]},{"name":"cv_builder()","total_count":1,"children":[]},{"name":"test_generate_docx_file_structure()","total_count":1,"children":[]},{"name":"test_skills_reordered_by_jd_relevance()","total_count":1,"children":[]},{"name":"test_truth_preserving_zero_hallucination()","total_count":1,"children":[]},{"name":"Verify ATS-friendly single column DOCX file generation.","total_count":1,"children":[]},{"name":"Verify that skills prioritized in JD appear first in the tailored resume.","total_count":1,"children":[]}]},{"name":"test_database.py","total_count":17,"children":[{"name":"Boundary / error case: invalid status string raises ValueError.","total_count":1,"children":[]},{"name":"DEL-PY-001: Verify single job deletion from SQLite.","total_count":1,"children":[]},{"name":"DEL-PY-002: Verify bulk deletion from SQLite.","total_count":1,"children":[]},{"name":"Happy path: inserting and retrieving a job.","total_count":1,"children":[]},{"name":"in_memory_db()","total_count":1,"children":[]},{"name":"Negative path: duplicate check on company + position + job_url.","total_count":1,"children":[]},{"name":"State transition test: NEW -> READY_TO_APPLY -> APPLIED.","total_count":1,"children":[]},{"name":"Test table creation and schema integrity.","total_count":1,"children":[]},{"name":"test_clear_all_jobs()","total_count":1,"children":[]},{"name":"test_context_manager_and_stats()","total_count":1,"children":[]},{"name":"test_delete_single_job()","total_count":1,"children":[]},{"name":"test_duplicate_protection()","total_count":1,"children":[]},{"name":"test_init_db_creates_tables()","total_count":1,"children":[]},{"name":"test_insert_and_get_job()","total_count":1,"children":[]},{"name":"test_invalid_status_raises_error()","total_count":1,"children":[]},{"name":"test_update_application_status()","total_count":1,"children":[]},{"name":"Verify context manager and stats aggregation.","total_count":1,"children":[]}]},{"name":"test_job_filter.py","total_count":17,"children":[{"name":"Boundary Value Analysis on Experience (max allowed = 5 years).","total_count":1,"children":[]},{"name":"Boundary Value Analysis on Salary (min_salary = 8,000,000).","total_count":1,"children":[]},{"name":"Equivalence Partitioning: Accepted locations vs non-matching location. LOC-001:\u2026","total_count":1,"children":[]},{"name":"Equivalence Partitioning: Title or JD with excluded keyword is rejected.","total_count":1,"children":[]},{"name":"Happy path: job meets all criteria.","total_count":1,"children":[]},{"name":"job_filter()","total_count":1,"children":[]},{"name":"LOC-002: WFH dan Hybrid harus diterima sebagai lokasi valid.","total_count":1,"children":[]},{"name":"SRCH-REL-001: Filter must accept jobs with titles matching target_roles or\u2026","total_count":1,"children":[]},{"name":"SRCH-REL-002: Filter must reject jobs with titles irrelevant to target_roles.","total_count":1,"children":[]},{"name":"test_filter_accepts_relevant_job_roles()","total_count":1,"children":[]},{"name":"test_filter_experience_bva()","total_count":1,"children":[]},{"name":"test_filter_location_matching()","total_count":1,"children":[]},{"name":"test_filter_location_wfh_hybrid()","total_count":1,"children":[]},{"name":"test_filter_pass_valid_job()","total_count":1,"children":[]},{"name":"test_filter_rejects_excluded_keywords()","total_count":1,"children":[]},{"name":"test_filter_rejects_irrelevant_job_roles()","total_count":1,"children":[]},{"name":"test_filter_salary_bva()","total_count":1,"children":[]}]},{"name":"test_job_matcher.py","total_count":7,"children":[{"name":"BVA on Match Classification Thresholds.","total_count":1,"children":[]},{"name":"Happy path: Strong match job.","total_count":1,"children":[]},{"name":"Job with missing requirements (gaps detection).","total_count":1,"children":[]},{"name":"matcher()","total_count":1,"children":[]},{"name":"test_match_classification_thresholds_bva()","total_count":1,"children":[]},{"name":"test_match_high_score()","total_count":1,"children":[]},{"name":"test_match_with_gaps()","total_count":1,"children":[]}]},{"name":"test_kalibrr.py","total_count":2,"children":[{"name":"SRCH-POR-001: Kalibrr raw JSON item properly normalized to JobPost.","total_count":1,"children":[]},{"name":"test_kalibrr_scraper_normalize_job()","total_count":1,"children":[]}]},{"name":"test_microsoft_todo.py","total_count":7,"children":[{"name":"Test successful task creation through mocked HTTP requests.","total_count":1,"children":[]},{"name":"test_format_task_title_and_body()","total_count":1,"children":[]},{"name":"test_sync_job_task_success()","total_count":1,"children":[]},{"name":"test_unconfigured_credentials_safe_fallback()","total_count":1,"children":[]},{"name":"todo_sync()","total_count":1,"children":[]},{"name":"Unconfigured client credentials should not crash, but return None gracefully.","total_count":1,"children":[]},{"name":"Verify task title and body match blueprint specifications.","total_count":1,"children":[]}]},{"name":"test_orchestrator.py","total_count":7,"children":[{"name":"Duplicate job should be skipped and return None.","total_count":1,"children":[]},{"name":"orchestrator()","total_count":1,"children":[]},{"name":"Scout mode processes job, calculates match, generates CV, but does not apply.","total_count":1,"children":[]},{"name":"test_orchestrator_approval_action()","total_count":1,"children":[]},{"name":"test_orchestrator_process_job_scout_mode()","total_count":1,"children":[]},{"name":"test_orchestrator_suppresses_duplicate()","total_count":1,"children":[]},{"name":"User approval applies and updates status to APPLIED.","total_count":1,"children":[]}]},{"name":"test_screening.py","total_count":11,"children":[{"name":"BVA on auto apply threshold: 85.0 -> AUTO_APPLY, 84.9 -> WAITING_APPROVAL.","total_count":1,"children":[]},{"name":"Custom / unknown question cannot be guessed and must trigger NEED_REVIEW.","total_count":1,"children":[]},{"name":"evaluator()","total_count":1,"children":[]},{"name":"Even if score is 95, custom question without answer forces NEED_REVIEW.","total_count":1,"children":[]},{"name":"Happy path: factual questions are resolved automatically from profile.","total_count":1,"children":[]},{"name":"ISTQB Decision Table Testing for Auto Apply: Rule 1 (All True): Score >= 85,\u2026","total_count":1,"children":[]},{"name":"test_decision_table_auto_apply_vs_need_review()","total_count":1,"children":[]},{"name":"test_decision_table_custom_question_forces_need_review()","total_count":1,"children":[]},{"name":"test_decision_table_score_bva()","total_count":1,"children":[]},{"name":"test_resolve_factual_questions()","total_count":1,"children":[]},{"name":"test_unresolved_question_triggers_need_review()","total_count":1,"children":[]}]}]},{"name":"web","total_count":149,"children":[{"name":"next.config.ts","total_count":1,"children":[{"name":"nextConfig","total_count":1,"children":[]}]},{"name":"package.json","total_count":47,"children":[{"name":"@testing-library/jest-dom","total_count":1,"children":[]},{"name":"@testing-library/jest-dom","total_count":1,"children":[]},{"name":"@testing-library/react","total_count":1,"children":[]},{"name":"@testing-library/react","total_count":1,"children":[]},{"name":"@types/node","total_count":1,"children":[]},{"name":"@types/node","total_count":1,"children":[]},{"name":"@types/react","total_count":1,"children":[]},{"name":"@types/react","total_count":1,"children":[]},{"name":"@types/react-dom","total_count":1,"children":[]},{"name":"@types/react-dom","total_count":1,"children":[]},{"name":"autoprefixer","total_count":1,"children":[]},{"name":"autoprefixer","total_count":1,"children":[]},{"name":"build","total_count":1,"children":[]},{"name":"clsx","total_count":1,"children":[]},{"name":"clsx","total_count":1,"children":[]},{"name":"dependencies","total_count":1,"children":[]},{"name":"dev","total_count":1,"children":[]},{"name":"devDependencies","total_count":1,"children":[]},{"name":"firebase","total_count":1,"children":[]},{"name":"firebase","total_count":1,"children":[]},{"name":"jsdom","total_count":1,"children":[]},{"name":"jsdom","total_count":1,"children":[]},{"name":"lint","total_count":1,"children":[]},{"name":"lucide-react","total_count":1,"children":[]},{"name":"lucide-react","total_count":1,"children":[]},{"name":"name","total_count":1,"children":[]},{"name":"next","total_count":1,"children":[]},{"name":"next","total_count":1,"children":[]},{"name":"postcss","total_count":1,"children":[]},{"name":"postcss","total_count":1,"children":[]},{"name":"private","total_count":1,"children":[]},{"name":"react","total_count":1,"children":[]},{"name":"react","total_count":1,"children":[]},{"name":"react-dom","total_count":1,"children":[]},{"name":"react-dom","total_count":1,"children":[]},{"name":"scripts","total_count":1,"children":[]},{"name":"start","total_count":1,"children":[]},{"name":"tailwind-merge","total_count":1,"children":[]},{"name":"tailwind-merge","total_count":1,"children":[]},{"name":"tailwindcss","total_count":1,"children":[]},{"name":"tailwindcss","total_count":1,"children":[]},{"name":"test","total_count":1,"children":[]},{"name":"typescript","total_count":1,"children":[]},{"name":"typescript","total_count":1,"children":[]},{"name":"version","total_count":1,"children":[]},{"name":"vitest","total_count":1,"children":[]},{"name":"vitest","total_count":1,"children":[]}]},{"name":"src","total_count":80,"children":[{"name":"app","total_count":24,"children":[{"name":"api","total_count":19,"children":[{"name":"analyze","total_count":2,"children":[{"name":"route.ts","total_count":2,"children":[{"name":"POST()","total_count":1,"children":[]},{"name":"USER_PROFILE","total_count":1,"children":[]}]}]},{"name":"jobs","total_count":6,"children":[{"name":"[id]","total_count":3,"children":[{"name":"route.ts","total_count":3,"children":[{"name":"DELETE()","total_count":1,"children":[]},{"name":"GET()","total_count":1,"children":[]},{"name":"PATCH()","total_count":1,"children":[]}]}]},{"name":"route.ts","total_count":3,"children":[{"name":"DELETE()","total_count":1,"children":[]},{"name":"GET()","total_count":1,"children":[]},{"name":"POST()","total_count":1,"children":[]}]}]},{"name":"scout","total_count":10,"children":[{"name":"route.ts","total_count":4,"children":[{"name":"fetchRealLiveJobs()","total_count":1,"children":[]},{"name":"POST()","total_count":1,"children":[]},{"name":"RawRealJob","total_count":1,"children":[]},{"name":"ScoutRequest","total_count":1,"children":[]}]},{"name":"stream","total_count":6,"children":[{"name":"route.ts","total_count":6,"children":[{"name":"fetchPortal()","total_count":1,"children":[]},{"name":"GET()","total_count":1,"children":[]},{"name":"RawJob","total_count":1,"children":[]},{"name":"ScoutLogEvent","total_count":1,"children":[]},{"name":"sseEvent()","total_count":1,"children":[]},{"name":"STRIP_HTML()","total_count":1,"children":[]}]}]}]},{"name":"stats","total_count":1,"children":[{"name":"route.ts","total_count":1,"children":[{"name":"GET()","total_count":1,"children":[]}]}]}]},{"name":"layout.tsx","total_count":4,"children":[{"name":"manrope","total_count":1,"children":[]},{"name":"metadata","total_count":1,"children":[]},{"name":"plusJakarta","total_count":1,"children":[]},{"name":"RootLayout()","total_count":1,"children":[]}]},{"name":"page.tsx","total_count":1,"children":[{"name":"DashboardPage()","total_count":1,"children":[]}]}]},{"name":"components","total_count":21,"children":[{"name":"bento","total_count":5,"children":[{"name":"HighMatchCard.tsx","total_count":2,"children":[{"name":"HighMatchCard()","total_count":1,"children":[]},{"name":"HighMatchCardProps","total_count":1,"children":[]}]},{"name":"ProfilePillCard.tsx","total_count":1,"children":[{"name":"ProfilePillCard()","total_count":1,"children":[]}]},{"name":"StatsCard.tsx","total_count":2,"children":[{"name":"StatsCard()","total_count":1,"children":[]},{"name":"StatsCardProps","total_count":1,"children":[]}]}]},{"name":"CVPreviewModal.tsx","total_count":2,"children":[{"name":"CVPreviewModal()","total_count":1,"children":[]},{"name":"CVPreviewModalProps","total_count":1,"children":[]}]},{"name":"DailyReportModal.tsx","total_count":2,"children":[{"name":"DailyReportModal()","total_count":1,"children":[]},{"name":"DailyReportModalProps","total_count":1,"children":[]}]},{"name":"DeleteConfirmModal.tsx","total_count":2,"children":[{"name":"DeleteConfirmModal()","total_count":1,"children":[]},{"name":"DeleteConfirmModalProps","total_count":1,"children":[]}]},{"name":"JobCard.tsx","total_count":2,"children":[{"name":"JobCard()","total_count":1,"children":[]},{"name":"JobCardProps","total_count":1,"children":[]}]},{"name":"JobImportModal.tsx","total_count":2,"children":[{"name":"JobImportModal()","total_count":1,"children":[]},{"name":"JobImportModalProps","total_count":1,"children":[]}]},{"name":"ModeSelector.tsx","total_count":2,"children":[{"name":"ModeSelector()","total_count":1,"children":[]},{"name":"ModeSelectorProps","total_count":1,"children":[]}]},{"name":"Navbar.tsx","total_count":2,"children":[{"name":"Navbar()","total_count":1,"children":[]},{"name":"NavbarProps","total_count":1,"children":[]}]},{"name":"ScreeningReviewModal.tsx","total_count":2,"children":[{"name":"ScreeningReviewModal()","total_count":1,"children":[]},{"name":"ScreeningReviewModalProps","total_count":1,"children":[]}]}]},{"name":"lib","total_count":27,"children":[{"name":"cover_letter.ts","total_count":2,"children":[{"name":"generateTailoredCoverLetter()","total_count":1,"children":[]},{"name":"isIndonesianText()","total_count":1,"children":[]}]},{"name":"decision_engine.ts","total_count":6,"children":[{"name":"AgentMode","total_count":1,"children":[]},{"name":"CANDIDATE_DEFAULTS","total_count":1,"children":[]},{"name":"evaluateModeDecision()","total_count":1,"children":[]},{"name":"ModeDecision","total_count":1,"children":[]},{"name":"resolveScreeningQuestion()","total_count":1,"children":[]},{"name":"ScreeningResolution","total_count":1,"children":[]}]},{"name":"firebase.ts","total_count":2,"children":[{"name":"firebaseConfig","total_count":1,"children":[]},{"name":"getFirestoreDb()","total_count":1,"children":[]}]},{"name":"firestore.ts","total_count":12,"children":[{"name":".constructor()","total_count":1,"children":[]},{"name":".createJob()","total_count":1,"children":[]},{"name":".deleteAllJobs()","total_count":1,"children":[]},{"name":".deleteJob()","total_count":1,"children":[]},{"name":".getJobById()","total_count":1,"children":[]},{"name":".getJobs()","total_count":1,"children":[]},{"name":".getStats()","total_count":1,"children":[]},{"name":".updateJobStatus()","total_count":1,"children":[]},{"name":"clearMockStore()","total_count":1,"children":[]},{"name":"firestoreJobService","total_count":1,"children":[]},{"name":"globalMockStore","total_count":1,"children":[]},{"name":"seedMockStoreIfNeeded()","total_count":1,"children":[]}]},{"name":"title_matcher.ts","total_count":1,"children":[{"name":"isTitleRelevant()","total_count":1,"children":[]}]},{"name":"types.ts","total_count":4,"children":[{"name":"ApplicationStatus","total_count":1,"children":[]},{"name":"JobHuntingStats","total_count":1,"children":[]},{"name":"JobPostData","total_count":1,"children":[]},{"name":"TailoredCVContent","total_count":1,"children":[]}]}]},{"name":"tests","total_count":8,"children":[{"name":"scout_portals_expansion.test.ts","total_count":2,"children":[{"name":"fetchedUrls","total_count":1,"children":[]},{"name":"mockFetch","total_count":1,"children":[]}]},{"name":"cover_letter.test.ts","total_count":1,"children":[]},{"name":"firestore.test.ts","total_count":1,"children":[]},{"name":"mode_decision.test.ts","total_count":1,"children":[]},{"name":"scout_real.test.ts","total_count":1,"children":[]},{"name":"scout_stream.test.ts","total_count":1,"children":[]},{"name":"stats.test.ts","total_count":1,"children":[]}]}]},{"name":"tailwind.config.ts","total_count":1,"children":[{"name":"config","total_count":1,"children":[]}]},{"name":"tsconfig.json","total_count":18,"children":[{"name":"allowJs","total_count":1,"children":[]},{"name":"compilerOptions","total_count":1,"children":[]},{"name":"esModuleInterop","total_count":1,"children":[]},{"name":"exclude","total_count":1,"children":[]},{"name":"include","total_count":1,"children":[]},{"name":"incremental","total_count":1,"children":[]},{"name":"isolatedModules","total_count":1,"children":[]},{"name":"jsx","total_count":1,"children":[]},{"name":"lib","total_count":1,"children":[]},{"name":"module","total_count":1,"children":[]},{"name":"moduleResolution","total_count":1,"children":[]},{"name":"noEmit","total_count":1,"children":[]},{"name":"paths","total_count":1,"children":[]},{"name":"plugins","total_count":1,"children":[]},{"name":"resolveJsonModule","total_count":1,"children":[]},{"name":"skipLibCheck","total_count":1,"children":[]},{"name":"strict","total_count":1,"children":[]},{"name":"target","total_count":1,"children":[]}]},{"name":"postcss.config.mjs","total_count":1,"children":[]},{"name":"vitest.config.ts","total_count":1,"children":[]}]}]};
+
+    function transformData(jsonData) {
+        // Helper function to recursively build the children structure
+        function processNode(node, parentL1StageName) {
+            let displayName = node.name;
+            // Append total_count if it exists and is not already in the name
+            if (node.total_count !== undefined) {
+                if (!/\(Total Count: \d+\)$/.test(displayName)) {
+                    displayName += ` (Total Count: ${node.total_count})`;
+                }
+            }
+
+            const newNode = { name: displayName };
+
+            if (parentL1StageName === "Root") {
+                 newNode.originalStageName = node.name;
+            } else {
+                newNode.originalStageName = parentL1StageName;
+            }
+
+            if (node.children && node.children.length > 0) {
+                const stageNameToPass = (parentL1StageName === "Root") ? node.name : parentL1StageName;
+                newNode.children = node.children.map(child => processNode(child, stageNameToPass));
+            }
+
+            return newNode;
+        }
+
+        let rootDisplayName = jsonData.name;
+        if (jsonData.total_count !== undefined && !/\(Total Count: \d+\)$/.test(rootDisplayName)) {
+            rootDisplayName += ` (Total Count: ${jsonData.total_count})`;
+        }
+
+        return {
+            name: rootDisplayName,
+            originalStageName: "Root",
+            children: (jsonData.children || []).map(child => processNode(child, "Root"))
+        };
+    }
+
+    const treeData = transformData(initialJsonData);
+
+    // Auto-populated phaseColors: every depth-1 child of the root gets
+    // a stable colour from a bigger palette so all top-level dirs are
+    // distinguishable.
+    const PALETTE = [
+      ["#3498DB","#2980B9","#AED6F1"], ["#2ECC71","#27AE60","#A9DFBF"],
+      ["#E74C3C","#C0392B","#F5B7B1"], ["#9B59B6","#8E44AD","#D7BDE2"],
+      ["#F39C12","#D68910","#FAD7A0"], ["#1ABC9C","#117864","#A2D9CE"],
+      ["#34495E","#1B2631","#ABB2B9"], ["#E67E22","#BA4A00","#F5CBA7"],
+      ["#16A085","#0E6655","#A2D9CE"], ["#D35400","#A04000","#EDBB99"],
+      ["#7F8C8D","#566573","#D5DBDB"], ["#C0392B","#7B241C","#F5B7B1"],
+      ["#2E86C1","#1B4F72","#A9CCE3"], ["#28B463","#196F3D","#A9DFBF"],
+      ["#AF7AC5","#6C3483","#D2B4DE"],
+    ];
+    const phaseColors = { "Root": { fill: "#4A4A4A", stroke: "#333333", collapsedFill: "#6C757D" },
+                          "Default": { fill: "#BDC3C7", stroke: "#95A5A6", collapsedFill: "#ECF0F1" } };
+    (initialJsonData.children || []).forEach((c, i) => {
+      const pal = PALETTE[i % PALETTE.length];
+      phaseColors[c.name] = { fill: pal[0], stroke: pal[1], collapsedFill: pal[2] };
+    });
+
+    const levelSpecificPalettes = {
+      0: { fill: "#4A4A4A", stroke: "#333333", collapsedFill: "#6C757D" },
+      2: { fill: "#6ab04c", stroke: "#508a38", collapsedFill: "#a3d391" },
+      3: { fill: "#f0932b", stroke: "#d0730f", collapsedFill: "#f6c07e" },
+      4: { fill: "#be2edd", stroke: "#a01cb3", collapsedFill: "#e08bf2" },
+      5: { fill: "#00a8ff", stroke: "#007ac1", collapsedFill: "#74d2ff" },
+      6: { fill: "#e55039", stroke: "#c23620", collapsedFill: "#f09a8d" },
+      default: { fill: "#747d8c", stroke: "#57606f", collapsedFill: "#a4b0be" }
+    };
+
+    const svgElement = d3.select("#tree-svg");
+    const initialSvgWidth = +svgElement.attr("width");
+    const initialSvgHeight = +svgElement.attr("height");
+    const margin = { top: 40, right: 120, bottom: 80, left: 450 };
+    let width = initialSvgWidth - margin.left - margin.right;
+    let height = initialSvgHeight - margin.top - margin.bottom;
+    const duration = 500;
+    let nodeCounter = 0;
+    const g = svgElement.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+    const treemap = d3.tree().nodeSize([40, 0]);
+    let rootNode = d3.hierarchy(treeData, d => d.children);
+    rootNode.x0 = 0;
+    rootNode.y0 = 0;
+
+    if (rootNode.children) {
+      rootNode.children.forEach(d_child => {
+        if (d_child.children) { collapseBranch(d_child); }
+      });
+    }
+    updateTree(rootNode);
+
+    function collapseBranch(d) { if (d.children) { d._children = d.children; d._children.forEach(collapseBranch); d.children = null; } }
+    function expandBranch(d) { if (d._children) { d.children = d._children; d._children = null; } if (d.children) { d.children.forEach(expandBranch); } }
+    window.expandAll = () => { expandBranch(rootNode); updateTree(rootNode); };
+    window.collapseAll = () => { if (rootNode.children) { rootNode.children.forEach(collapseBranch); } updateTree(rootNode); };
+    window.resetView = () => { if (rootNode.children) { rootNode.children.forEach(d_child => { if (d_child.children || d_child._children) { collapseBranch(d_child); } }); } if (rootNode._children && !rootNode.children) { rootNode.children = rootNode._children; rootNode._children = null; } updateTree(rootNode); };
+
+    function updateTree(source) {
+      const treeLayoutData = treemap(rootNode);
+      let nodes = treeLayoutData.descendants();
+      let links = treeLayoutData.descendants().slice(1);
+
+      let minX = 0;
+      let maxX = 0;
+      if (nodes.length > 0) {
+        minX = d3.min(nodes, d => d.x);
+        maxX = d3.max(nodes, d => d.x);
+      }
+
+      let neededHeight = Math.max(initialSvgHeight, maxX - minX + margin.top + margin.bottom + 100);
+      svgElement.transition().duration(duration / 2).attr("height", neededHeight);
+      g.transition().duration(duration / 2).attr("transform", `translate(${margin.left},${margin.top - minX + 40})`);
+
+      nodes.forEach(d => { d.y = d.depth * 400; }); // Adjust horizontal separation if needed
+
+      const node = g.selectAll('g.node').data(nodes, d => d.id || (d.id = ++nodeCounter));
+      const nodeEnter = node.enter().append('g')
+        .attr('class', d => "node" + (d.children || d._children ? " node--internal" : " node--leaf") + (d._children ? " _children" : ""))
+        .attr('transform', d => `translate(${source.y0},${source.x0})`)
+        .on('click', (event, d) => { if (d.children) { d._children = d.children; d.children = null; } else if (d._children) { d.children = d._children; d._children = null; } updateTree(d); })
+        .style('cursor', d => (d.children || d._children) ? 'pointer' : 'default');
+
+      nodeEnter.append('circle').attr('r', 1e-6);
+
+      nodeEnter.append('text')
+        .attr('dy', '.35em')
+        .attr('x', d => d.children || d._children ? -14 : 14)
+        .attr('text-anchor', d => d.children || d._children ? 'end' : 'start')
+        .style("fill-opacity", 1e-6)
+        .call(wrapText, 380);
+
+      const nodeUpdate = nodeEnter.merge(node);
+      nodeUpdate.transition().duration(duration)
+        .attr('transform', d => `translate(${d.y},${d.x})`)
+        .attr('class', d => "node" + (d.children ? " node--internal" : " node--leaf") + (d._children ? " node--internal _children" : ""));
+
+      nodeUpdate.select('circle').attr('r', 8.5)
+        .style('fill', d => {
+            let palette;
+            if (d.depth === 0) {
+                palette = levelSpecificPalettes[0];
+            } else if (d.depth === 1) {
+                palette = phaseColors[d.data.originalStageName] || phaseColors.Default;
+            } else {
+                palette = levelSpecificPalettes[d.depth] || levelSpecificPalettes.default;
+            }
+            if (d._children) return palette.collapsedFill;
+            if (d.children) return palette.fill;
+            return "#fff";
+        })
+        .style('stroke', d => {
+            let palette;
+            if (d.depth === 0) {
+                palette = levelSpecificPalettes[0];
+            } else if (d.depth === 1) {
+                palette = phaseColors[d.data.originalStageName] || phaseColors.Default;
+            } else {
+                palette = levelSpecificPalettes[d.depth] || levelSpecificPalettes.default;
+            }
+            return palette.stroke;
+        });
+      nodeUpdate.select('text').style("fill-opacity", 1).call(wrapText, 380);
+
+      const nodeExit = node.exit().transition().duration(duration).attr('transform', d => `translate(${source.y},${source.x})`).remove();
+      nodeExit.select('circle').attr('r', 1e-6);
+      nodeExit.select('text').style('fill-opacity', 1e-6);
+
+      const link = g.selectAll('path.link').data(links, d => d.id);
+      const linkEnter = link.enter().insert('path', "g").attr('class', 'link').attr('d', d => { const o = { x: source.x0, y: source.y0 }; return diagonal(o, o); });
+
+      linkEnter.merge(link).transition().duration(duration).attr('d', d => diagonal(d, d.parent))
+        .style('stroke', d => {
+            const sourceNode = d.parent;
+            if (!sourceNode) return phaseColors.Default.stroke;
+            const l1AncestorName = sourceNode.data.originalStageName;
+            const colorPalette = phaseColors[l1AncestorName] || phaseColors.Default;
+            return colorPalette.stroke;
+        });
+      link.exit().transition().duration(duration).attr('d', d => { const o = { x: source.x, y: source.y }; return diagonal(o, o); }).remove();
+      nodes.forEach(d => { d.x0 = d.x; d.y0 = d.y; });
+    }
+
+    function diagonal(s, d) { return `M ${s.y} ${s.x} C ${(s.y + d.y) / 2} ${s.x}, ${(s.y + d.y) / 2} ${d.x}, ${d.y} ${d.x}`; }
+
+    function wrapText(textElements, maxWidth) {
+        const textPartColors = {
+            name: '#343a40',
+            count: '#0056b3'
+        };
+        const countRegex = /(\s\(Total Count: \d+\))$/;
+
+        textElements.each(function () {
+            const textD3 = d3.select(this);
+            const originalNodeText = textD3.datum().data.name;
+            const x = parseFloat(textD3.attr("x") || 0);
+            const initialDy = textD3.attr("dy");
+            const textAnchor = textD3.attr("text-anchor");
+            const lineHeight = 1.1;
+
+            textD3.text(null);
+
+            let namePart = originalNodeText;
+            let countPartText = "";
+
+            const countMatch = originalNodeText.match(countRegex);
+            if (countMatch && originalNodeText.endsWith(countMatch[0])) {
+                namePart = originalNodeText.substring(0, originalNodeText.length - countMatch[0].length).trim();
+                countPartText = countMatch[0].trim();
+            }
+
+            const tokens = [];
+            namePart.split(/\s+/).filter(Boolean).forEach(word => {
+                tokens.push({ text: word, type: 'name' });
+            });
+            if (countPartText) {
+                tokens.push({ text: countPartText, type: 'count' });
+            }
+
+            if (tokens.length === 0 && originalNodeText) {
+                tokens.push({ text: originalNodeText, type: 'name' });
+            }
+
+            let currentTspan = textD3.append("tspan").attr("x", x).attr("dy", initialDy);
+            if (textAnchor === "end") currentTspan.attr("text-anchor", "end");
+
+            let lineTokens = [];
+
+            for (let i = 0; i < tokens.length; i++) {
+                const tokenObj = tokens[i];
+
+                lineTokens.push(tokenObj);
+                currentTspan.text(lineTokens.map(t => t.text).join(" "));
+
+                if (currentTspan.node().getComputedTextLength() > maxWidth && lineTokens.length > 1) {
+                    lineTokens.pop();
+
+                    currentTspan.text(null);
+                    lineTokens.forEach((prevToken, idx) => {
+                        currentTspan.append("tspan")
+                            .text((idx > 0 ? " " : "") + prevToken.text)
+                            .style("fill", textPartColors[prevToken.type] || textPartColors.name)
+                            .style("font-weight", prevToken.type === 'count' ? "bold" : "normal");
+                    });
+
+                    lineTokens = [tokenObj];
+                    currentTspan = textD3.append("tspan").attr("x", x).attr("dy", lineHeight + "em");
+                    if (textAnchor === "end") currentTspan.attr("text-anchor", "end");
+                }
+            }
+
+            currentTspan.text(null);
+            lineTokens.forEach((token, idx) => {
+                currentTspan.append("tspan")
+                    .text((idx > 0 ? " " : "") + token.text)
+                    .style("fill", textPartColors[token.type] || textPartColors.name)
+                    .style("font-weight", token.type === 'count' ? "bold" : "normal");
+            });
+
+            if (textD3.selectAll("tspan > tspan").empty() && textD3.select("tspan").text().length === 0 && originalNodeText) {
+                let t = textD3.select("tspan");
+                let displayText = originalNodeText;
+                t.text(displayText).style("fill", textPartColors.name);
+                if (t.node() && t.node().getComputedTextLength() > maxWidth && displayText.length > 20) {
+                    let estimatedChars = Math.floor(maxWidth / (t.node().getComputedTextLength()/displayText.length) );
+                    displayText = displayText.substring(0, Math.max(0, estimatedChars - 3)) + "...";
+                    t.text(displayText);
+                }
+            }
+        });
+    }
+  </script>
+</body>
+</html>

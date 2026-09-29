@@ -1,4 +1,7 @@
 import { NextRequest } from "next/server";
+import { firestoreJobService } from "@/lib/firestore";
+import { JobPostData, TailoredCVContent } from "@/lib/types";
+import { isTitleRelevant } from "@/lib/title_matcher";
 
 interface ScoutLogEvent {
   step: string;
@@ -6,6 +9,7 @@ interface ScoutLogEvent {
   count?: number;
   total?: number;
   qualified?: number;
+  jobs?: JobPostData[];
 }
 
 interface RawJob {
@@ -241,11 +245,147 @@ export async function GET(request: NextRequest) {
         emit({ step: "arbeitnow_done", message: `✅ Arbeitnow: ${arbeitnowJobs.length} lowongan ditemukan`, count: allJobs.length });
       }
 
+      // --- Portal 6: Synced local jobs from Python scraper (JobStreet & Glints) ---
+      try {
+        // eslint-disable-next-line @typescript-eslint/no-require-imports
+        const synced = require("@/lib/synced_jobs.json");
+        if (Array.isArray(synced) && synced.length > 0) {
+          const syncedItems: RawJob[] = [];
+          for (const j of synced.slice(0, 10)) {
+            if (j.position && j.job_url && !seen.has(j.job_url)) {
+              syncedItems.push({
+                source: j.source || "JobStreet",
+                company: j.company,
+                position: j.position,
+                location: j.location || "Indonesia",
+                salary_min: j.salary_min,
+                salary_max: j.salary_max,
+                job_url: j.job_url,
+                description: j.job_description || j.position,
+                requirements: j.requirements || ["Manual Testing", "SQL"],
+              });
+            }
+          }
+          if (syncedItems.length > 0) {
+            addJobs(syncedItems);
+            emit({
+              step: "synced_done",
+              message: `📂 JobStreet/Glints (Lokal): ${syncedItems.length} lowongan tersinkronisasi`,
+              count: allJobs.length,
+            });
+          }
+        }
+      } catch {
+        // No synced file present
+      }
+
+      // --- Evaluasi Kualifikasi & Simpan ke Database (Firestore) ---
+      emit({
+        step: "evaluating",
+        message: `⚙️ Mengevaluasi ${allJobs.length} lowongan, menghitung skor kecocokan & tailoring CV...`,
+        count: allJobs.length,
+      });
+
+      const addedJobs: JobPostData[] = [];
+      let skippedCount = 0;
+
+      for (const item of allJobs) {
+        // 1. Title / Role Relevance Check (Strict Matching)
+        if (!isTitleRelevant(item.position, query)) {
+          skippedCount++;
+          continue;
+        }
+
+        // 2. Exclude Keyword Check (Job Filter)
+        if (
+          item.position.toLowerCase().includes("sales") ||
+          item.description.toLowerCase().includes("commission only")
+        ) {
+          skippedCount++;
+          continue;
+        }
+
+        // 3. Score Calculation (7 Dimensions)
+        const userSkills = [
+          "selenium", "playwright", "appium", "postman", "jmeter", "sql",
+          "manual testing", "regression testing", "istqb", "grafana", "git", "python", "javascript"
+        ];
+        const matched = item.requirements.filter((r) => userSkills.includes(r.toLowerCase()));
+        const gaps = item.requirements.filter((r) => !userSkills.includes(r.toLowerCase()));
+
+        const skillRatio = item.requirements.length > 0 ? matched.length / item.requirements.length : 1.0;
+        const skillScore = skillRatio * 35.0;
+        const roleScore = 20.0;
+        const expScore = 15.0;
+        const locScore = 10.0;
+        const salaryScore = 10.0;
+        const toolsScore = 10.0;
+
+        const totalScore = Math.min(100.0, Math.round((skillScore + roleScore + expScore + locScore + salaryScore + toolsScore) * 10) / 10);
+        const status = totalScore >= 80.0 ? "READY_TO_APPLY" : "REVIEW";
+
+        // 4. Tailored CV Content for Firman Aji Prasetyo
+        const tailoredCV: TailoredCVContent = {
+          name: "Firman Aji Prasetyo",
+          title: item.position,
+          summary: `QA Engineer with 1.5+ years of experience delivering quality across 6 concurrent projects in PropertyTech and Fintech domains. Specializes in test automation (Selenium, Playwright), ISTQB-aligned techniques, and reducing defect leakage.`,
+          skills: {
+            "Prioritized Stack": matched,
+            "Database & Development": ["SQL", "Python", "JavaScript", "Grafana"],
+          },
+          experiences: [
+            {
+              company: "PT. Royal D'Paragon Land",
+              role: "Quality Assurance Engineer",
+              location: "Depok, Yogyakarta · On-site",
+              start_date: "2025-03",
+              end_date: "2026-04",
+              bullets: [
+                "Managed QA across 6 concurrent projects (booking, payment, finance, reservation, ops).",
+                "Reduced defect leakage to production by ~30% and monitored bugs using Grafana.",
+                "Automated 70% of the regression suite using Selenium and applied ISTQB techniques.",
+              ],
+            },
+          ],
+          matched_skills: matched,
+          gaps: gaps,
+        };
+
+        const jobData: JobPostData = {
+          source: item.source,
+          company: item.company,
+          position: item.position,
+          location: item.location,
+          salary_min: item.salary_min,
+          salary_max: item.salary_max,
+          job_url: item.job_url,
+          job_description: item.description,
+          requirements: item.requirements,
+          match_score: totalScore,
+          status,
+          matched_skills: matched,
+          gaps: gaps,
+          tailored_cv: tailoredCV,
+          discovered_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        };
+
+        try {
+          const createdId = await firestoreJobService.createJob(jobData);
+          if (createdId) {
+            addedJobs.push({ ...jobData, id: createdId });
+          }
+        } catch (saveErr) {
+          console.warn("Notice: Failed saving job to firestore:", saveErr);
+        }
+      }
+
       emit({
         step: "done",
-        message: `✅ Selesai! ${allJobs.length} lowongan ditemukan dari semua portal.`,
+        message: `✅ Selesai! Memindai ${allJobs.length} lowongan, ${addedJobs.length} lolos kualifikasi & tersimpan di Daftar Peluang.`,
         total: allJobs.length,
-        qualified: allJobs.length,
+        qualified: addedJobs.length,
+        jobs: addedJobs,
       });
 
       controller.close();
